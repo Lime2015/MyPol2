@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="all">All</string>
+    <string name="createnote">Create note</string>
+    <string name="closedrawer">Close drawer</string>
+    <string name="favorites">Favorites</string>
+    <string name="notes">Notes</string>
+    <string name="opendrawer">Open drawer</string>
+    <string name="photo">Photo</string>
+    <string name="recording">Recording</string>
+    <string name="refresh">Refresh</string>
+    <string name="reminder">Reminder</string>
+    <string name="search">Search</string>
+    <string name="shared">Shared</string>
+    <string name="sheet_item_pressed">Item pressed</string>
+    <string name="snackbar_shared_msg">Gordon Wong shared a note with you.</string>
+    <string name="view">View</string>
+
+    <string name="app_name">마이폴</string>
+    <string name="demo_btn_name">둘러보기</string>
+    <string name="action_settings">설정</string>
+    <string name="signup_button">추가정보입력</string>
+    <string name="action_logout">로그아웃</string>
+    <string name="address">주소</string>
+    <string name="birthday">생년월일</string>
+    <string name="gender">성별</string>
+
+    <string-array name="gender_types">
+        <item>남</item>
+        <item>여</item>
+    </string-array>
+</resources>
