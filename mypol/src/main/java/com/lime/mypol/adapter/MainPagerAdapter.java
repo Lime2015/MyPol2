@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.lime.mypol.R;
 import com.lime.mypol.fragment.AllFragment;
 import com.lime.mypol.fragment.FavoritesFragment;
+import com.lime.mypol.fragment.MenusFragment;
 import com.lime.mypol.fragment.SharedFragment;
 
 
@@ -19,7 +20,7 @@ import com.lime.mypol.fragment.SharedFragment;
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
 	public static final int NUM_ITEMS = 3;
-	public static final int ALL_POS = 0;
+	public static final int MENUS_POS = 0;
 	public static final int SHARED_POS = 1;
 	public static final int FAVORITES_POS = 2;
 
@@ -33,8 +34,8 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 	@Override
 	public Fragment getItem(int position) {
 		switch (position) {
-		case ALL_POS:
-			return AllFragment.newInstance();
+		case MENUS_POS:
+			return MenusFragment.newInstance();
 		case SHARED_POS:
 			return SharedFragment.newInstance();
 		case FAVORITES_POS:
@@ -47,8 +48,8 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 	@Override
 	public CharSequence getPageTitle(int position) {
 		switch (position) {
-		case ALL_POS:
-			return context.getString(R.string.all);
+		case MENUS_POS:
+			return context.getString(R.string.menus);
 		case SHARED_POS:
 			return context.getString(R.string.shared);
 		case FAVORITES_POS:

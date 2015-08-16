@@ -34,6 +34,7 @@ import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.HttpClientImageDownloader;
 
 /**
@@ -68,12 +69,13 @@ public class GlobalApplication extends Application {
         //  ImageLoaderConfiguration.createDefault(this);
         // method.
         DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.ic_empty_photo)
-                .showImageForEmptyUri(R.drawable.ic_empty_photo)
-                .showImageOnFail(R.drawable.ic_empty_photo)
+                .showImageOnLoading(R.drawable.ic_face_black_48dp)
+                .showImageForEmptyUri(R.drawable.ic_face_black_48dp)
+                .showImageOnFail(R.drawable.ic_face_black_48dp)
                 .cacheInMemory(true)
                 .cacheOnDisc(true)
                 .considerExifParams(true)
+//                .displayer(new RoundedBitmapDisplayer(20))
                 .build();
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)

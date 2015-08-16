@@ -3,14 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_main_search"
-        android:icon="@drawable/ic_search_white_24dp"
-        android:title="@string/search"
+        android:id="@+id/menu_main_logout"
+        android:icon="@drawable/ic_exit_to_app_white_48dp"
+        android:title="Logout"
         app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/menu_main_refresh"
-        android:title="@string/refresh"
-        app:showAsAction="never" />
 
 </menu>

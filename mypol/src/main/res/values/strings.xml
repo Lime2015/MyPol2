@@ -16,5 +16,9 @@
     <string name="sheet_item_pressed">Item pressed</string>
     <string name="snackbar_shared_msg">Gordon Wong shared a note with you.</string>
     <string name="view">View</string>
+    <string name="setting">Setting</string>
+    <string name="data">Data</string>
+    <string name="watchMod">Watching Mod</string>
+    <string name="menus">Menus</string>
 
 </resources>
