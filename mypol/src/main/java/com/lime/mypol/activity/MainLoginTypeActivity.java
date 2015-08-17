@@ -1,12 +1,18 @@
 package com.lime.mypol.activity;
 
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.kakao.Session;
@@ -18,21 +24,19 @@ import com.lime.mypol.R;
 import com.lime.mypol.manager.NetworkManager;
 import com.lime.mypol.models.MemberInfo;
 import com.lime.mypol.result.CheckMemberResult;
+import com.lime.mypol.view.kbv.KenBurnsView;
 
 
-public class MainLoginTypeActivity extends ActionBarActivity {
+public class MainLoginTypeActivity extends AppCompatActivity {
 
     private static String TAG = "MainLoginTypeActivity";
 
-    private Button btnDemo;
 
     private final int WA_SIGNUP_CODE = 1100;
 
     private MemberInfo kakaoMemberInfo;
     private UserProfile userProfile;
 
-
-    private LoginButton loginButton;
     private final SessionCallback mySessionCallback = new MySessionStatusCallback();
     private Session session;
 
@@ -71,6 +75,9 @@ public class MainLoginTypeActivity extends ActionBarActivity {
         }
     }
 
+
+    private LoginButton loginButton;
+    private Button btnDemo;
     private void initView() {
         setContentView(R.layout.activity_main_login_type);
         btnDemo = (Button) findViewById(R.id.demo_btn);
@@ -91,6 +98,45 @@ public class MainLoginTypeActivity extends ActionBarActivity {
 
         session = Session.getCurrentSession();
         session.addCallback(mySessionCallback);
+
+        setAnimation();
+    }
+
+    private KenBurnsView mKenBurns;
+    private void setAnimation() {
+        mKenBurns = (KenBurnsView) findViewById(R.id.ken_burns_images);
+        mKenBurns.setImageResource(R.drawable.main_background);
+        animation2();
+    }
+
+
+    private void animation1() {
+        ObjectAnimator scaleXAnimation = ObjectAnimator.ofFloat(loginButton, "scaleX", 5.0F, 1.0F);
+        scaleXAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+        scaleXAnimation.setDuration(1200);
+        ObjectAnimator scaleYAnimation = ObjectAnimator.ofFloat(loginButton, "scaleY", 5.0F, 1.0F);
+        scaleYAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+        scaleYAnimation.setDuration(1200);
+        ObjectAnimator alphaAnimation = ObjectAnimator.ofFloat(loginButton, "alpha", 0.0F, 1.0F);
+        alphaAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+        alphaAnimation.setDuration(1200);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(scaleXAnimation).with(scaleYAnimation).with(alphaAnimation);
+        animatorSet.setStartDelay(500);
+        animatorSet.start();
+    }
+
+    private void animation2() {
+        LinearLayout linearLayout = (LinearLayout)findViewById(R.id.layout_button);
+        Animation anim = AnimationUtils.loadAnimation(this, R.anim.translate_top_to_center);
+        linearLayout.startAnimation(anim);
+    }
+
+    private void animation3() {
+        ObjectAnimator alphaAnimation = ObjectAnimator.ofFloat(btnDemo, "alpha", 0.0F, 1.0F);
+        alphaAnimation.setStartDelay(1700);
+        alphaAnimation.setDuration(500);
+        alphaAnimation.start();
     }
 
     @Override

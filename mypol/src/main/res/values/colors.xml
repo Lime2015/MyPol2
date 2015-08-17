@@ -25,4 +25,8 @@
         <item>#FD7044</item>
     </array>
 
+    <color name="menu_assemblyman">#689f38</color>
+    <color name="menu_bill">#FD7044</color>
+    <color name="menu_hallofhonor">#9f359c</color>
+
 </resources>

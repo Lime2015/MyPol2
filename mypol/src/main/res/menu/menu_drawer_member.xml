@@ -10,7 +10,7 @@
 
     <item
         android:id="@+id/menu_drawer_member_data"
-        android:icon="@drawable/ic_cloud_download_black_48dp"
+        android:icon="@drawable/ic_file_download_black_48dp"
         android:title="@string/data"
         app:showAsAction="always|withText" />
 

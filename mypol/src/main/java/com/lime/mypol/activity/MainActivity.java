@@ -203,11 +203,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case MainPagerAdapter.MENUS_POS:
                 materialSheetFab.showFab();
                 break;
-            case MainPagerAdapter.SHARED_POS:
+            case MainPagerAdapter.MYPOL_POS:
                 materialSheetFab.showFab(0,
                         -getResources().getDimensionPixelSize(R.dimen.snackbar_height));
                 break;
-            case MainPagerAdapter.FAVORITES_POS:
+            case MainPagerAdapter.COMMENT_POS:
             default:
                 materialSheetFab.hideSheetThenFab();
                 break;
@@ -222,11 +222,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void updateSnackbar(int selectedPage) {
         View snackbar = findViewById(R.id.snackbar);
         switch (selectedPage) {
-            case MainPagerAdapter.SHARED_POS:
+            case MainPagerAdapter.MYPOL_POS:
                 snackbar.setVisibility(View.VISIBLE);
                 break;
             case MainPagerAdapter.MENUS_POS:
-            case MainPagerAdapter.FAVORITES_POS:
+            case MainPagerAdapter.COMMENT_POS:
             default:
                 snackbar.setVisibility(View.GONE);
                 break;

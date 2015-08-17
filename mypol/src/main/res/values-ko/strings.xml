@@ -25,10 +25,13 @@
     <string name="address">주소</string>
     <string name="birthday">생년월일</string>
     <string name="gender">성별</string>
-    <string name="setting">설정</string>
-    <string name="data">데이터</string>
+    <string name="setting">설정 변경</string>
+    <string name="data">데이터 받기</string>
     <string name="watchMod">둘러보기</string>
     <string name="menus">메뉴</string>
+    <string name="mypol">마이폴</string>
+    <string name="comment">코멘트</string>
+    <string name="assemblyman">국회의원</string>
 
     <string-array name="gender_types">
         <item>남</item>

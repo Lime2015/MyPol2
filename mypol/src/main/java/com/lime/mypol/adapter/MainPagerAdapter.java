@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.lime.mypol.R;
-import com.lime.mypol.fragment.AllFragment;
 import com.lime.mypol.fragment.FavoritesFragment;
 import com.lime.mypol.fragment.MenusFragment;
 import com.lime.mypol.fragment.SharedFragment;
@@ -21,8 +20,8 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
 	public static final int NUM_ITEMS = 3;
 	public static final int MENUS_POS = 0;
-	public static final int SHARED_POS = 1;
-	public static final int FAVORITES_POS = 2;
+	public static final int MYPOL_POS = 1;
+	public static final int COMMENT_POS = 2;
 
 	private Context context;
 
@@ -36,9 +35,9 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 		switch (position) {
 		case MENUS_POS:
 			return MenusFragment.newInstance();
-		case SHARED_POS:
+		case MYPOL_POS:
 			return SharedFragment.newInstance();
-		case FAVORITES_POS:
+		case COMMENT_POS:
 			return FavoritesFragment.newInstance();
 		default:
 			return null;
@@ -50,10 +49,10 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 		switch (position) {
 		case MENUS_POS:
 			return context.getString(R.string.menus);
-		case SHARED_POS:
-			return context.getString(R.string.shared);
-		case FAVORITES_POS:
-			return context.getString(R.string.favorites);
+		case MYPOL_POS:
+			return context.getString(R.string.mypol);
+		case COMMENT_POS:
+			return context.getString(R.string.comment);
 		default:
 			return "";
 		}

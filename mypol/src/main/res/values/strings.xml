@@ -20,5 +20,8 @@
     <string name="data">Data</string>
     <string name="watchMod">Watching Mod</string>
     <string name="menus">Menus</string>
+    <string name="mypol">MyPol</string>
+    <string name="comment">Comment</string>
+    <string name="assemblyman">Assemblyman</string>
 
 </resources>
