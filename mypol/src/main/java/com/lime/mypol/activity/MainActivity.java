@@ -3,6 +3,7 @@ package com.lime.mypol.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -10,7 +11,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,6 +30,7 @@ import com.kakao.UserManagement;
 import com.lime.mypol.R;
 import com.lime.mypol.adapter.MainPagerAdapter;
 import com.lime.mypol.button.Fab;
+import com.lime.mypol.fragment.CommentsFragment;
 import com.lime.mypol.models.MemberInfo;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -40,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
-    private MaterialSheetFab materialSheetFab;
+    //    private MaterialSheetFab materialSheetFab;
     private int statusBarColor;
 
     @Override
@@ -48,9 +52,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
 //        setTitle(R.string.app_name);
         setContentView(R.layout.activity_main);
+
         setupActionBar();
         setupDrawer();
-        setupFab();
+//        setupFab();
         setupTabs();
     }
 
@@ -60,14 +65,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         drawerToggle.syncState();
     }
 
-    @Override
-    public void onBackPressed() {
-        if (materialSheetFab.isSheetVisible()) {
-            materialSheetFab.hideSheet();
-        } else {
-            super.onBackPressed();
-        }
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (materialSheetFab.isSheetVisible()) {
+//            materialSheetFab.hideSheet();
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
 
     /**
      * Sets up the action bar.
@@ -82,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private MemberInfo memberInfo;
     private DisplayImageOptions options;
+
     private void setupDrawer() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.opendrawer, R.string.closedrawer);
@@ -122,9 +128,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setupTabs() {
         // Setup view pager
         ViewPager viewpager = (ViewPager) findViewById(R.id.viewpager);
-        viewpager.setAdapter(new MainPagerAdapter(this, getSupportFragmentManager()));
+        MainPagerAdapter mainPagerAdapter = new MainPagerAdapter(this, getSupportFragmentManager());
+        viewpager.setAdapter(mainPagerAdapter);
         viewpager.setOffscreenPageLimit(MainPagerAdapter.NUM_ITEMS);
-        updatePage(viewpager.getCurrentItem());
+//        updatePage(viewpager.getCurrentItem());
 
         // Setup tab layout
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -136,102 +143,106 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onPageSelected(int i) {
-                updatePage(i);
+//                updatePage(i);
             }
 
             @Override
             public void onPageScrollStateChanged(int i) {
             }
         });
+
     }
 
     /**
      * Sets up the Floating action button.
      */
-    private void setupFab() {
-
-        Fab fab = (Fab) findViewById(R.id.fab);
-        View sheetView = findViewById(R.id.fab_sheet);
-        View overlay = findViewById(R.id.overlay);
-        int sheetColor = getResources().getColor(R.color.background_card);
-        int fabColor = getResources().getColor(R.color.theme_accent);
-
-        // Create material sheet FAB
-        materialSheetFab = new MaterialSheetFab<>(fab, sheetView, overlay, sheetColor, fabColor);
-
-        // Set material sheet event listener
-        materialSheetFab.setEventListener(new MaterialSheetFabEventListener() {
-            @Override
-            public void onShowSheet() {
-                // Save current status bar color
-                statusBarColor = getStatusBarColor();
-                // Set darker status bar color to match the dim overlay
-                setStatusBarColor(getResources().getColor(R.color.theme_primary_dark2));
-            }
-
-            @Override
-            public void onHideSheet() {
-                // Restore status bar color
-                setStatusBarColor(statusBarColor);
-            }
-        });
-
-        // Set material sheet item click listeners
-        findViewById(R.id.fab_sheet_item_recording).setOnClickListener(this);
-        findViewById(R.id.fab_sheet_item_reminder).setOnClickListener(this);
-        findViewById(R.id.fab_sheet_item_photo).setOnClickListener(this);
-        findViewById(R.id.fab_sheet_item_note).setOnClickListener(this);
-    }
+//    private void setupFab() {
+//
+//        Fab fab = (Fab) findViewById(R.id.fab);
+//        View sheetView = findViewById(R.id.fab_sheet);
+//        View overlay = findViewById(R.id.overlay);
+//        int sheetColor = getResources().getColor(R.color.background_card);
+//        int fabColor = getResources().getColor(R.color.blue_grey_400);
+//
+//        // Create material sheet FAB
+//        materialSheetFab = new MaterialSheetFab<>(fab, sheetView, overlay, sheetColor, fabColor);
+////        materialSheetFab = new MaterialSheetFab<>(fab, null, null, 0, fabColor);
+//
+//        // Set material sheet event listener
+//        materialSheetFab.setEventListener(new MaterialSheetFabEventListener() {
+//            @Override
+//            public void onShowSheet() {
+//                // Save current status bar color
+//                statusBarColor = getStatusBarColor();
+//                // Set darker status bar color to match the dim overlay
+//                setStatusBarColor(getResources().getColor(R.color.theme_primary_dark2));
+//            }
+//
+//            @Override
+//            public void onHideSheet() {
+//                // Restore status bar color
+//                setStatusBarColor(statusBarColor);
+//            }
+//        });
+//
+////        // Set material sheet item click listeners
+////        findViewById(R.id.fab_sheet_item_recording).setOnClickListener(this);
+////        findViewById(R.id.fab_sheet_item_reminder).setOnClickListener(this);
+////        findViewById(R.id.fab_sheet_item_photo).setOnClickListener(this);
+////        findViewById(R.id.fab_sheet_item_note).setOnClickListener(this);
+//    }
 
     /**
      * Called when the selected page changes.
      *
      * @param selectedPage selected page
      */
-    private void updatePage(int selectedPage) {
-        updateFab(selectedPage);
-        updateSnackbar(selectedPage);
-    }
+//    private void updatePage(int selectedPage) {
+//        updateFab(selectedPage);
+//        updateSnackbar(selectedPage);
+//    }
 
     /**
      * Updates the FAB based on the selected page
      *
      * @param selectedPage selected page
      */
-    private void updateFab(int selectedPage) {
-        switch (selectedPage) {
-            case MainPagerAdapter.MENUS_POS:
-                materialSheetFab.showFab();
-                break;
-            case MainPagerAdapter.MYPOL_POS:
-                materialSheetFab.showFab(0,
-                        -getResources().getDimensionPixelSize(R.dimen.snackbar_height));
-                break;
-            case MainPagerAdapter.COMMENT_POS:
-            default:
-                materialSheetFab.hideSheetThenFab();
-                break;
-        }
-    }
+
+//    private void updateFab(int selectedPage) {
+//        switch (selectedPage) {
+//            case MainPagerAdapter.MENUS_POS:
+////                materialSheetFab.showFab();
+////                break;
+//            case MainPagerAdapter.MYPOL_POS:
+////                materialSheetFab.showFab(0, -getResources().getDimensionPixelSize(R.dimen.snackbar_height));
+////                materialSheetFab.hideSheetThenFab();
+//                break;
+//            case MainPagerAdapter.COMMENT_POS:
+//            default:
+////                materialSheetFab.hideSheetThenFab();
+////                materialSheetFab.showFab();
+//                break;
+//        }
+//    }
 
     /**
      * Updates the snackbar based on the selected page
      *
      * @param selectedPage selected page
      */
-    private void updateSnackbar(int selectedPage) {
-        View snackbar = findViewById(R.id.snackbar);
-        switch (selectedPage) {
-            case MainPagerAdapter.MYPOL_POS:
-                snackbar.setVisibility(View.VISIBLE);
-                break;
-            case MainPagerAdapter.MENUS_POS:
-            case MainPagerAdapter.COMMENT_POS:
-            default:
-                snackbar.setVisibility(View.GONE);
-                break;
-        }
-    }
+//    private void updateSnackbar(int selectedPage) {
+//        View snackbar = findViewById(R.id.snackbar);
+//        switch (selectedPage) {
+//            case MainPagerAdapter.MYPOL_POS:
+////                snackbar.setVisibility(View.VISIBLE);
+////                break;
+//            case MainPagerAdapter.MENUS_POS:
+//            case MainPagerAdapter.COMMENT_POS:
+//            default:
+//                snackbar.setVisibility(View.GONE);
+//                break;
+//        }
+//    }
 
     /**
      * Toggles opening/closing the drawer.
@@ -247,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         Toast.makeText(this, R.string.sheet_item_pressed, Toast.LENGTH_SHORT).show();
-        materialSheetFab.hideSheet();
+//        materialSheetFab.hideSheet();
     }
 
     @Override

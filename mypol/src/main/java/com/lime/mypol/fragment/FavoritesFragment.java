@@ -25,6 +25,6 @@ public class FavoritesFragment extends NotesListFragment {
 
 	@Override
 	protected int getNumItems() {
-		return 7;
+		return 30;
 	}
 }

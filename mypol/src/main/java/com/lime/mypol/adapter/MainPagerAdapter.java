@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.lime.mypol.R;
 import com.lime.mypol.fragment.FavoritesFragment;
 import com.lime.mypol.fragment.MenusFragment;
+import com.lime.mypol.fragment.MypolFragment;
 import com.lime.mypol.fragment.SharedFragment;
 
 
@@ -36,7 +37,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 		case MENUS_POS:
 			return MenusFragment.newInstance();
 		case MYPOL_POS:
-			return SharedFragment.newInstance();
+			return MypolFragment.newInstance();
 		case COMMENT_POS:
 			return FavoritesFragment.newInstance();
 		default:

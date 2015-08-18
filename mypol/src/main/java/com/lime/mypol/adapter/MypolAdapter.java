@@ -15,22 +15,25 @@ import com.lime.mypol.models.Menu;
  *
  * Adapter for the all items screen.
  */
-public class MenusAdapter extends RecyclerView.Adapter<MenusAdapter.ViewHolder> {
+public class MypolAdapter extends RecyclerView.Adapter<MypolAdapter.ViewHolder> {
 
 	private Menu[] menus;
+	private final int MYPOL_STEP_ZERO = 0;
 
-	public MenusAdapter() {
+	public MypolAdapter(int step) {
 
-		menus = new Menu[3];
-		menus[0] = new Menu("국회의원","19대 국회의원의 기본정보 및 전반적인 의정활동을 살펴볼 수 있습니다.", R.color.light_green_400);
-		menus[1] = new Menu("의안","19대 국회 개원 이후 국회 본회의에서 처리된 모든 의안의 의원별 투표 결과를 확인하실 수 있습니다.\n <자료출처 : 국회공보, 국회회의록시스템>", R.color.orange_400);
-		menus[2] = new Menu("명예의전당","기간별 가장 인기있는 국회의원을 확인할 수 있습니다.", R.color.indigo_400);
+		switch (step){
+			case MYPOL_STEP_ZERO:
+				menus = new Menu[1];
+				menus[0] = new Menu("시작하기", "내 정치성향과 비슷한 국회의원을 영입하여 나만의 정당을 만들어 보세요~\n마이폴 시즌19를 시작합니다.", R.color.orange_400);
+				break;
+		}
 	}
 
 
 
 	@Override
-	public MenusAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+	public MypolAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_menu, parent,
 				false);
 		return new ViewHolder(v);

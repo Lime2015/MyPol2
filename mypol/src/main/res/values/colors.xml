@@ -25,8 +25,11 @@
         <item>#FD7044</item>
     </array>
 
-    <color name="menu_assemblyman">#689f38</color>
-    <color name="menu_bill">#FD7044</color>
-    <color name="menu_hallofhonor">#9f359c</color>
+    <color name="light_green_400">#9CCC65</color>
+    <color name="purple_400">#AB47BC</color>
+    <color name="orange_400">#FFA726</color>
+    <color name="indigo_400">#5C6BC0</color>
+    <color name="blue_grey_400">#78909C</color>
+    <color name="lime_400">#D4E157</color>
 
 </resources>

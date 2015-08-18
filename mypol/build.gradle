@@ -46,7 +46,4 @@ dependencies {
     compile project(':androidPullToRefreshLibrary')
     compile 'com.gordonwong:material-sheet-fab:1.0.1'
     compile 'com.android.support:design:22.2.1'
-    compile files('libs/listviewanimations_lib-core-slh_3.1.0.jar')
-    compile files('libs/listviewanimations_lib-core_3.1.0.jar')
-    compile files('libs/listviewanimations_lib-manipulation_3.1.0.jar')
 }

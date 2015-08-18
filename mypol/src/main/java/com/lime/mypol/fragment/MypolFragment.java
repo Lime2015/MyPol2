@@ -7,15 +7,15 @@ import com.lime.mypol.R;
  *
  * Favorite items fragment.
  */
-public class MenusFragment extends MenusListFragment {
+public class MypolFragment extends MypolListFragment {
 
-	public static MenusFragment newInstance() {
-		return new MenusFragment();
+	public static MypolFragment newInstance() {
+		return new MypolFragment();
 	}
 
 	@Override
 	protected int getLayoutResId() {
-		return R.layout.fragment_menus;
+		return R.layout.fragment_mypol;
 	}
 
 	@Override
@@ -25,6 +25,6 @@ public class MenusFragment extends MenusListFragment {
 
 	@Override
 	protected int getNumItems() {
-		return 3;
+		return 5;
 	}
 }
