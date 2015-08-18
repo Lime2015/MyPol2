@@ -73,10 +73,11 @@
     <style name="Widget.MaterialSheetFab.Note.List" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:paddingTop">@dimen/note_spacing</item>
-        <item name="android:paddingLeft">@dimen/note_spacing</item>
-        <item name="android:paddingRight">@dimen/note_spacing</item>
-        <item name="android:paddingBottom">@dimen/fab_list_spacing</item>
+        <!--<item name="android:paddingTop">@dimen/note_spacing</item>-->
+        <!--<item name="android:paddingLeft">@dimen/note_spacing</item>-->
+        <!--<item name="android:paddingRight">@dimen/note_spacing</item>-->
+        <!--<item name="android:paddingBottom">@dimen/note_spacing</item>-->
+        <item name="android:padding">@dimen/note_spacing</item>
         <item name="android:clipToPadding">false</item>
     </style>
 

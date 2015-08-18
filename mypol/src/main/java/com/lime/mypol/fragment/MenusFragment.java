@@ -7,7 +7,7 @@ import com.lime.mypol.R;
  *
  * Favorite items fragment.
  */
-public class MenusFragment extends NotesListFragment {
+public class MenusFragment extends MenusListFragment {
 
 	public static MenusFragment newInstance() {
 		return new MenusFragment();

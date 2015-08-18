@@ -16,30 +16,29 @@ import com.lime.mypol.adapter.NotesAdapter;
 
 /**
  * Created by Gordon Wong on 7/18/2015.
- *
+ * <p/>
  * Generic fragment displaying a list of notes.
  */
 public abstract class NotesListFragment extends Fragment {
 
-	@LayoutRes
-	protected abstract int getLayoutResId();
+    @LayoutRes
+    protected abstract int getLayoutResId();
 
-	protected abstract int getNumColumns();
+    protected abstract int getNumColumns();
 
-	protected abstract int getNumItems();
+    protected abstract int getNumItems();
 
-	@Nullable
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(getLayoutResId(), container, false);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(getLayoutResId(), container, false);
 
-		// Setup list
-		RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.notes_list);
-		recyclerView.setLayoutManager(new StaggeredGridLayoutManager(getNumColumns(),
-				StaggeredGridLayoutManager.VERTICAL));
-		recyclerView.setAdapter(new NotesAdapter(getActivity(), getNumItems()));
+        // Setup list
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.notes_list);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(getNumColumns(), StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.setAdapter(new NotesAdapter(getActivity(), getNumItems()));
 
-		return view;
-	}
+        return view;
+    }
 
 }

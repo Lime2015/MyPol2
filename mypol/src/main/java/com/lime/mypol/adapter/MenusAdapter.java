@@ -26,7 +26,7 @@ public class MenusAdapter extends RecyclerView.Adapter<MenusAdapter.ViewHolder> 
 
 		menus = new Menu[3];
 		menus[0] = new Menu("국회의원","19대 국회의원의 기본정보 및 전반적인 의정활동을 살펴볼 수 있습니다.", R.color.menu_assemblyman);
-		menus[1] = new Menu("의안","19대 국회 개원 이후 국회 본회의에서 처리된 모든 의안의 의원별 투표 결과를 확인하실 수 있습니다. <자료출처 : 국회공보, 국회회의록시스템>", R.color.menu_bill);
+		menus[1] = new Menu("의안","19대 국회 개원 이후 국회 본회의에서 처리된 모든 의안의 의원별 투표 결과를 확인하실 수 있습니다.\n <자료출처 : 국회공보, 국회회의록시스템>", R.color.menu_bill);
 		menus[2] = new Menu("명예의전당","기간별 가장 인기있는 국회의원을 확인할 수 있습니다.", R.color.menu_hallofhonor);
 	}
 
@@ -44,21 +44,21 @@ public class MenusAdapter extends RecyclerView.Adapter<MenusAdapter.ViewHolder> 
 		Menu menuModel = menus[position];
 		String title = menuModel.getTitle();
 		String info = menuModel.getInfo();
-		int color = menuModel.getColor();
+		int colorId = menuModel.getColor();
 
 		// Set text
 		holder.titleTextView.setText(title);
 		holder.infoTextView.setText(info);
 
 
-		// Set padding
-		int paddingTop = holder.itemView.getContext().getResources()
-						.getDimensionPixelSize(R.dimen.note_content_spacing);
-		holder.titleTextView.setPadding(holder.titleTextView.getPaddingLeft(), paddingTop,
-				holder.titleTextView.getPaddingRight(), holder.titleTextView.getPaddingBottom());
+//		// Set padding
+//		int paddingTop = holder.itemView.getContext().getResources()
+//						.getDimensionPixelSize(R.dimen.note_content_spacing);
+//		holder.titleTextView.setPadding(holder.titleTextView.getPaddingLeft(), paddingTop,
+//				holder.titleTextView.getPaddingRight(), holder.titleTextView.getPaddingBottom());
 
 		// Set background color
-		((CardView) holder.itemView).setCardBackgroundColor(color);
+		((CardView) holder.itemView).setCardBackgroundColor(holder.itemView.getContext().getResources().getColor(colorId));
 	}
 
 	@Override
