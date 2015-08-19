@@ -4,7 +4,7 @@
     <string name="all">All</string>
     <string name="createnote">Create note</string>
     <string name="closedrawer">Close drawer</string>
-    <string name="favorites">Favorites</string>
+    <string name="favorites">Favorite Assemblyman/Bill</string>
     <string name="notes">Notes</string>
     <string name="opendrawer">Open drawer</string>
     <string name="photo">Photo</string>
@@ -23,5 +23,6 @@
     <string name="mypol">MyPol</string>
     <string name="comment">Comment</string>
     <string name="assemblyman">Assemblyman</string>
+    <string name="profile">Profile</string>
 
 </resources>
