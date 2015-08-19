@@ -34,7 +34,7 @@ public class MainLoginTypeActivity extends AppCompatActivity {
 
     private final int WA_SIGNUP_CODE = 1100;
 
-    private MemberInfo kakaoMemberInfo;
+    private MemberInfo kakaoMemberInfo = new MemberInfo();
     private UserProfile userProfile;
 
     private final SessionCallback mySessionCallback = new MySessionStatusCallback();
@@ -43,10 +43,7 @@ public class MainLoginTypeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
         super.onCreate(savedInstanceState);
-
-        kakaoMemberInfo = null;
         checkLoginInfo();
     }
 
@@ -57,7 +54,7 @@ public class MainLoginTypeActivity extends AppCompatActivity {
 //        Log.d(TAG, "kakaoMemberInfo:" + kakaoMemberInfo);
 //        Log.d(TAG, "userProfile:" + userProfile);
 
-        if (kakaoMemberInfo == null && userProfile != null) {
+        if (!kakaoMemberInfo.isLogOn() && userProfile != null) {
             long id = userProfile.getId();
             String nickname = userProfile.getNickname();
 

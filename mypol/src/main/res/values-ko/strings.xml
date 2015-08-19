@@ -32,7 +32,7 @@
     <string name="mypol">마이폴</string>
     <string name="comment">코멘트</string>
     <string name="assemblyman">국회의원</string>
-    <string name="profile">정보수정</string>
+    <string name="profile">정보 수정</string>
 
     <string-array name="gender_types">
         <item>남</item>

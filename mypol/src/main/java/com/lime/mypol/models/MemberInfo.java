@@ -7,6 +7,7 @@ import java.util.Date;
  * Created by Administrator on 2015-06-09.
  */
 public class MemberInfo implements Serializable {
+    private boolean logOn;
     private String memberId;
     private int logonTypeId;
     private String memberNickname;
@@ -16,10 +17,11 @@ public class MemberInfo implements Serializable {
     private String urlThumbnail;
 
     public MemberInfo(){
-        memberId = "";
+        logOn = false;
     }
 
     public MemberInfo(String memberId, int logonTypeId, String memberNickname) {
+        this.logOn = true;
         this.memberId = memberId;
         this.logonTypeId = logonTypeId;
         this.memberNickname = memberNickname;
@@ -27,6 +29,14 @@ public class MemberInfo implements Serializable {
         this.birthDate = null;
         this.gender = null;
         this.urlThumbnail = null;
+    }
+
+    public boolean isLogOn() {
+        return logOn;
+    }
+
+    public void setLogOn(boolean logOn) {
+        this.logOn = logOn;
     }
 
     public String getMemberId() {

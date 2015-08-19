@@ -3,7 +3,7 @@ package com.lime.mypol.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -11,9 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,23 +20,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gordonwong.materialsheetfab.MaterialSheetFab;
-import com.gordonwong.materialsheetfab.MaterialSheetFabEventListener;
 import com.kakao.APIErrorResult;
 import com.kakao.LogoutResponseCallback;
 import com.kakao.UserManagement;
 import com.lime.mypol.R;
 import com.lime.mypol.adapter.MainPagerAdapter;
-import com.lime.mypol.button.Fab;
-import com.lime.mypol.fragment.CommentsFragment;
 import com.lime.mypol.models.MemberInfo;
 import com.lime.mypol.utils.ImageUtil;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by Gordon Wong on 7/17/2015.
- * <p>
+ * <p/>
  * Main activity for material sheet fab sample.
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -89,11 +81,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MemberInfo memberInfo;
 //    private DisplayImageOptions options;
 
+    private NavigationView navigationView;
     private void setupDrawer() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.opendrawer, R.string.closedrawer);
         drawerLayout.setDrawerListener(drawerToggle);
 
+        drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                if (!memberInfo.isLogOn()) {
+                    drawerMenuHideOption(R.id.menu_drawer_member_favorate);
+                    drawerMenuHideOption(R.id.menu_drawer_member_profile);
+                }
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
 //        options = new DisplayImageOptions.Builder()
 //                .showImageOnLoading(R.drawable.ic_face_white_48dp)
 //                .showImageForEmptyUri(R.drawable.ic_face_white_48dp)
@@ -110,16 +128,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ActionBar bar = getSupportActionBar();
         TextView textView = (TextView) findViewById(R.id.member_id);
         ImageView imageView = (ImageView) findViewById(R.id.member_photo);
-        if (memberInfo == null || memberInfo.getMemberId().equals("")) {
+
+        if (memberInfo.isLogOn()) {
+            textView.setText(memberInfo.getMemberNickname());
+            bar.setTitle(memberInfo.getMemberNickname());
+            ImageUtil.displayRoundImage(imageView, memberInfo.getUrlThumbnail(), null);
+        } else {
             textView.setText(R.string.watchMod);
             bar.setTitle(R.string.watchMod);
             imageView.setImageResource(R.drawable.ic_face_white_48dp);
-
-        } else {
-            textView.setText(memberInfo.getMemberNickname());
-            bar.setTitle(memberInfo.getMemberNickname());
-//			ImageLoader.getInstance().displayImage(memberInfo.getUrlThumbnail(), imageView);
-            ImageUtil.displayRoundImage(imageView, memberInfo.getUrlThumbnail(), null);
         }
     }
 
@@ -262,11 +279,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        materialSheetFab.hideSheet();
     }
 
+    private Menu menu;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (!memberInfo.isLogOn()) {
+            menuHideOption(R.id.menu_main_member_favorate);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    private void menuHideOption(int id) {
+        MenuItem item = menu.findItem(id);
+        item.setVisible(false);
+    }
+
+    private void drawerMenuHideOption(int id) {
+        MenuItem item = navigationView.getMenu().findItem(id);
+        item.setVisible(false);
     }
 
     @Override
@@ -274,11 +313,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         switch (item.getItemId()) {
             case R.id.menu_main_logout:
-                if (memberInfo.getMemberId().equals("")) {
-                    redirectMainActivity();
-                } else {
+                if (memberInfo.isLogOn()) {
                     redirectLogoutActivity();
+                } else {
+                    redirectMainActivity();
                 }
+                return true;
+
+            case R.id.menu_main_member_favorate:
                 return true;
 
             case android.R.id.home:
@@ -288,6 +330,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
     private int getStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -307,7 +350,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         UserManagement.requestLogout(new LogoutResponseCallback() {
             @Override
             protected void onSuccess(long l) {
-                memberInfo = null;
+                memberInfo = new MemberInfo();
                 redirectMainActivity();
             }
 
