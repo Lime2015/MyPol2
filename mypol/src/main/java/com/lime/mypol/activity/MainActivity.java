@@ -32,6 +32,7 @@ import com.lime.mypol.adapter.MainPagerAdapter;
 import com.lime.mypol.button.Fab;
 import com.lime.mypol.fragment.CommentsFragment;
 import com.lime.mypol.models.MemberInfo;
+import com.lime.mypol.utils.ImageUtil;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -86,22 +87,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * Sets up the navigation drawer.
      */
     private MemberInfo memberInfo;
-    private DisplayImageOptions options;
+//    private DisplayImageOptions options;
 
     private void setupDrawer() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.opendrawer, R.string.closedrawer);
         drawerLayout.setDrawerListener(drawerToggle);
 
-        options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.ic_face_white_48dp)
-                .showImageForEmptyUri(R.drawable.ic_face_white_48dp)
-                .showImageOnFail(R.drawable.ic_face_white_48dp)
-                .cacheInMemory(false)
-                .cacheOnDisc(false)
-                .considerExifParams(true)
-//                .displayer(new RoundedBitmapDisplayer(120))
-                .build();
+//        options = new DisplayImageOptions.Builder()
+//                .showImageOnLoading(R.drawable.ic_face_white_48dp)
+//                .showImageForEmptyUri(R.drawable.ic_face_white_48dp)
+//                .showImageOnFail(R.drawable.ic_face_white_48dp)
+//                .cacheInMemory(false)
+//                .cacheOnDisc(false)
+//                .considerExifParams(true)
+////                .displayer(new RoundedBitmapDisplayer(120))
+//                .build();
 
         Intent intent = getIntent();
         memberInfo = (MemberInfo) intent.getSerializableExtra("memberInfo");
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             textView.setText(memberInfo.getMemberNickname());
             bar.setTitle(memberInfo.getMemberNickname());
 //			ImageLoader.getInstance().displayImage(memberInfo.getUrlThumbnail(), imageView);
-            ImageLoader.getInstance().displayImage(memberInfo.getUrlThumbnail(), imageView, options);
+            ImageUtil.displayRoundImage(imageView, memberInfo.getUrlThumbnail(), null);
         }
     }
 

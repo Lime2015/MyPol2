@@ -31,15 +31,14 @@
             android:gravity="center_vertical"
             android:orientation="vertical" >
 
-            <com.lime.mypol.font.RobotoTextView
-                android:id="@+id/comment_member_id"
+            <TextView
+                android:id="@+id/comment_member_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dp"
                 android:text="\@John Doe"
                 android:textColor="@color/material_grey_600"
-                android:textSize="16sp"
-                app:typeface="robotoLight" />
+                android:textSize="16sp" />
 
             <!--<com.lime.mypol.font.RobotoTextView-->
                 <!--android:id="@+id/list_item_google_cards_social_place"-->
@@ -68,7 +67,7 @@
         android:orientation="vertical"
         android:background="@drawable/google_cards_background_bottom"  >
 
-        <com.lime.mypol.font.RobotoTextView
+        <TextView
             android:id="@+id/comment_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,8 +77,7 @@
             android:layout_marginTop="20dp"
             android:maxLines="2"
             android:textColor="@color/material_blue_grey_700"
-            android:textSize="14sp"
-            app:typeface="robotoRegular" />
+            android:textSize="14sp" />
 
         <View
             android:layout_width="match_parent"
@@ -91,7 +89,7 @@
             android:layout_height="wrap_content"
             android:gravity="right" >
 
-            <com.lime.mypol.font.RobotoTextView
+            <TextView
                 android:id="@+id/comment_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -100,10 +98,9 @@
                 android:padding="8dp"
                 android:text="LIKE"
                 android:textColor="@color/material_purple_500"
-                android:textSize="14sp"
-                app:typeface="robotoMedium" />
+                android:textSize="14sp" />
 
-            <com.lime.mypol.font.RobotoTextView
+            <TextView
                 android:id="@+id/comment_dislike"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -112,8 +109,7 @@
                 android:padding="8dp"
                 android:text="DISLIKE"
                 android:textColor="@color/material_purple_500"
-                android:textSize="14sp"
-                app:typeface="robotoMedium" />
+                android:textSize="14sp"/>
         </LinearLayout>
     </LinearLayout>
 

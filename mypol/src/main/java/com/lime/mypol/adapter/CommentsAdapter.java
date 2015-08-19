@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.lime.mypol.R;
 import com.lime.mypol.models.Comment;
+import com.lime.mypol.utils.ImageUtil;
 
 import java.util.List;
 
@@ -34,8 +35,8 @@ public class CommentsAdapter extends ArrayAdapter<Comment> implements OnClickLis
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.list_item_comment, parent, false);
             holder = new ViewHolder();
-            holder.memberIcon = (ImageView) convertView.findViewById(R.id.comment_member_photo);
-            holder.memberId = (TextView) convertView.findViewById(R.id.comment_member_id);
+            holder.memberPhoto = (ImageView) convertView.findViewById(R.id.comment_member_photo);
+            holder.memberName = (TextView) convertView.findViewById(R.id.comment_member_name);
             holder.comment = (TextView) convertView.findViewById(R.id.comment_comment);
 //            holder.like = (TextView) convertView.findViewById(R.id.comment_like);
 //            holder.follow = (TextView) convertView.findViewById(R.id.comment_dislike);
@@ -47,8 +48,8 @@ public class CommentsAdapter extends ArrayAdapter<Comment> implements OnClickLis
         }
 
         Comment item = getItem(position);
-        ImageUtil.displayRoundImage(holder.memberIcon, item.getMemberIconUrl(), null);
-        holder.memberId.setText(item.getMemberId());
+        ImageUtil.displayRoundImage(holder.memberPhoto, item.getMemberPhotoUrl(), null);
+        holder.memberName.setText(item.getMemberName());
         holder.comment.setText(item.getComment());
 //        holder.like.setTag(position);
 //        holder.follow.setTag(position);
@@ -57,8 +58,8 @@ public class CommentsAdapter extends ArrayAdapter<Comment> implements OnClickLis
     }
 
     private static class ViewHolder {
-        public ImageView memberIcon;
-        public TextView memberId;
+        public ImageView memberPhoto;
+        public TextView memberName;
         public TextView comment;
     }
 

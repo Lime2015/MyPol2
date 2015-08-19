@@ -5,8 +5,8 @@ package com.lime.mypol.models;
  */
 public class Comment {
     private long id;
-    private String memberId;
-    private String memberIconUrl;
+    private String memberName;
+    private String memberPhotoUrl;
     private int commentType;
     private String targetId;
     private String comment;
@@ -15,10 +15,10 @@ public class Comment {
 
     public Comment(){}
 
-    public Comment(long id, String memberId, String memberIconUrl, int commentType, String targetId, String comment, int like, int dislike) {
+    public Comment(long id, String memberName, String memberPhotoUrl, int commentType, String targetId, String comment, int like, int dislike) {
         this.id = id;
-        this.memberId = memberId;
-        this.memberIconUrl = memberIconUrl;
+        this.memberName = memberName;
+        this.memberPhotoUrl = memberPhotoUrl;
         this.commentType = commentType;
         this.targetId = targetId;
         this.comment = comment;
@@ -34,20 +34,20 @@ public class Comment {
         this.id = id;
     }
 
-    public String getMemberId() {
-        return memberId;
+    public String getMemberName() {
+        return memberName;
     }
 
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
+    public void setMemberName(String memberName) {
+        this.memberName = memberName;
     }
 
-    public String getMemberIconUrl() {
-        return memberIconUrl;
+    public String getMemberPhotoUrl() {
+        return memberPhotoUrl;
     }
 
-    public void setMemberIconUrl(String memberIconUrl) {
-        this.memberIconUrl = memberIconUrl;
+    public void setMemberPhotoUrl(String memberPhotoUrl) {
+        this.memberPhotoUrl = memberPhotoUrl;
     }
 
     public int getCommentType() {

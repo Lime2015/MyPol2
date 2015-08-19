@@ -19,23 +19,12 @@ package com.lime.mypol.application;
 
 import android.app.Application;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.support.v4.util.LruCache;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.Volley;
 import com.kakao.Session;
 import com.kakao.helper.SystemInfo;
-import com.lime.mypol.R;
 import com.lime.mypol.manager.DatabaseManager;
-import com.lime.mypol.manager.NetworkManager;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
-import com.nostra13.universalimageloader.core.download.HttpClientImageDownloader;
 
 /**
  * 이미지를 캐시를 앱 수준에서 관리하기 위한 애플리케이션 객체이다.
@@ -64,30 +53,38 @@ public class GlobalApplication extends Application {
     }
 
     public static void initImageLoader(Context context) {
+
+
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        if (!imageLoader.isInited()) {
+            imageLoader.init(ImageLoaderConfiguration.createDefault(context));
+        }
+
+
         // This configuration tuning is custom. You can tune every option, you may tune some of them,
         // or you can create default configuration by
         //  ImageLoaderConfiguration.createDefault(this);
         // method.
-        DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.ic_face_black_48dp)
-                .showImageForEmptyUri(R.drawable.ic_face_black_48dp)
-                .showImageOnFail(R.drawable.ic_face_black_48dp)
-                .cacheInMemory(true)
-                .cacheOnDisc(true)
-                .considerExifParams(true)
-//                .displayer(new RoundedBitmapDisplayer(20))
-                .build();
-
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-                .threadPriority(Thread.NORM_PRIORITY - 2)
-                .denyCacheImageMultipleSizesInMemory()
-                .discCacheFileNameGenerator(new Md5FileNameGenerator())
-                .tasksProcessingOrder(QueueProcessingType.LIFO)
-                .writeDebugLogs() // Remove for release app
-                .defaultDisplayImageOptions(options)
-                .imageDownloader(new HttpClientImageDownloader(context, NetworkManager.getInstance().getHttpClient()))
-                .build();
-        com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config);
+//        DisplayImageOptions options = new DisplayImageOptions.Builder()
+//                .showImageOnLoading(R.drawable.ic_face_black_48dp)
+//                .showImageForEmptyUri(R.drawable.ic_face_black_48dp)
+//                .showImageOnFail(R.drawable.ic_face_black_48dp)
+//                .cacheInMemory(true)
+//                .cacheOnDisc(true)
+//                .considerExifParams(true)
+////                .displayer(new RoundedBitmapDisplayer(20))
+//                .build();
+//
+//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+//                .threadPriority(Thread.NORM_PRIORITY - 2)
+//                .denyCacheImageMultipleSizesInMemory()
+//                .discCacheFileNameGenerator(new Md5FileNameGenerator())
+//                .tasksProcessingOrder(QueueProcessingType.LIFO)
+//                .writeDebugLogs() // Remove for release app
+//                .defaultDisplayImageOptions(options)
+//                .imageDownloader(new HttpClientImageDownloader(context, NetworkManager.getInstance().getHttpClient()))
+//                .build();
+//        com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config);
     }
 
 

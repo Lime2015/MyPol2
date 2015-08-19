@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.lime.mypol.R;
+import com.lime.mypol.fragment.CommentsFragment;
 import com.lime.mypol.fragment.MenusFragment;
 import com.lime.mypol.fragment.MypolFragment;
 
@@ -37,7 +38,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 		case MYPOL_POS:
 			return MypolFragment.newInstance();
 		case COMMENT_POS:
-			return FavoritesFragment.newInstance();
+			return CommentsFragment.newInstance();
 		default:
 			return null;
 		}
