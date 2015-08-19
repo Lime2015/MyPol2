@@ -6,10 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.lime.mypol.R;
-import com.lime.mypol.fragment.FavoritesFragment;
 import com.lime.mypol.fragment.MenusFragment;
 import com.lime.mypol.fragment.MypolFragment;
-import com.lime.mypol.fragment.SharedFragment;
 
 
 /**

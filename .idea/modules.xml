@@ -5,8 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/MyPol2.iml" filepath="$PROJECT_DIR$/MyPol2.iml" />
       <module fileurl="file://$PROJECT_DIR$/androidAysncHttpMulitPartModifyLibrary/androidAysncHttpMulitPartModifyLibrary.iml" filepath="$PROJECT_DIR$/androidAysncHttpMulitPartModifyLibrary/androidAysncHttpMulitPartModifyLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/androidPullToRefreshLibrary/androidPullToRefreshLibrary.iml" filepath="$PROJECT_DIR$/androidPullToRefreshLibrary/androidPullToRefreshLibrary.iml" />
-      <module fileurl="file://$PROJECT_DIR$/androidUniversalImageLoaderLibrary/androidUniversalImageLoaderLibrary.iml" filepath="$PROJECT_DIR$/androidUniversalImageLoaderLibrary/androidUniversalImageLoaderLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/mypol/mypol.iml" filepath="$PROJECT_DIR$/mypol/mypol.iml" />
     </modules>
   </component>
 </project>
+

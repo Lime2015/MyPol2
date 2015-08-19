@@ -42,7 +42,7 @@ dependencies {
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     compile 'com.nineoldandroids:library:2.4.0'
     compile project(':androidAysncHttpMulitPartModifyLibrary')
-    compile project(':androidUniversalImageLoaderLibrary')
+    //    compile project(':androidUniversalImageLoaderLibrary')
     compile project(':androidPullToRefreshLibrary')
     compile 'com.gordonwong:material-sheet-fab:1.0.1'
     compile 'com.android.support:design:22.2.1'

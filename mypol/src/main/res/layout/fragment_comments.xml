@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/comments_list"
-        style="@style/Widget.MaterialSheetFab.Note.List" />
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/comments_list"
+    style="@style/ListViewStyle" />
+
+<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
+
+    <!--<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:id="@+id/comments_list"-->
+        <!--style="@style/Widget.MaterialSheetFab.Note.List" />-->
 
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="5dp"
-        android:clickable="true"
-        android:src="@drawable/ic_expand_less_black_48dp"
-        app:backgroundTint="@color/lime_400" />
-</FrameLayout>
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/fab"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom|right"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:clickable="true"-->
+        <!--android:src="@drawable/ic_expand_less_black_48dp"-->
+        <!--app:backgroundTint="@color/lime_400" />-->
+<!--</FrameLayout>-->

@@ -4,7 +4,9 @@ package com.lime.mypol.models;
  * Created by seongsan on 2015-08-18.
  */
 public class Comment {
+    private long id;
     private String memberId;
+    private String memberIconUrl;
     private int commentType;
     private String targetId;
     private String comment;
@@ -13,13 +15,23 @@ public class Comment {
 
     public Comment(){}
 
-    public Comment(String memberId, int commentType, String targetId, String comment, int like, int dislike) {
+    public Comment(long id, String memberId, String memberIconUrl, int commentType, String targetId, String comment, int like, int dislike) {
+        this.id = id;
         this.memberId = memberId;
+        this.memberIconUrl = memberIconUrl;
         this.commentType = commentType;
         this.targetId = targetId;
         this.comment = comment;
         this.like = like;
         this.dislike = dislike;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getMemberId() {
@@ -28,6 +40,14 @@ public class Comment {
 
     public void setMemberId(String memberId) {
         this.memberId = memberId;
+    }
+
+    public String getMemberIconUrl() {
+        return memberIconUrl;
+    }
+
+    public void setMemberIconUrl(String memberIconUrl) {
+        this.memberIconUrl = memberIconUrl;
     }
 
     public int getCommentType() {

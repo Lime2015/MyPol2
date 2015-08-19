@@ -1,1 +1,1 @@
-include ':mypol', ':androidAysncHttpMulitPartModifyLibrary', ':androidPullToRefreshLibrary', ':androidUniversalImageLoaderLibrary'
+include ':mypol', ':androidAysncHttpMulitPartModifyLibrary', ':androidPullToRefreshLibrary'
