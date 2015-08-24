@@ -1,8 +1,11 @@
 package com.lime.mypol.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -25,15 +28,26 @@ import com.kakao.LogoutResponseCallback;
 import com.kakao.UserManagement;
 import com.lime.mypol.R;
 import com.lime.mypol.adapter.MainPagerAdapter;
+import com.lime.mypol.manager.DatabaseManager;
+import com.lime.mypol.manager.NetworkManager;
 import com.lime.mypol.models.MemberInfo;
+import com.lime.mypol.result.CheckTagResult;
+import com.lime.mypol.utils.BadgeUtil;
 import com.lime.mypol.utils.ImageUtil;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by Gordon Wong on 7/17/2015.
- * <p/>
+ * <p>
  * Main activity for material sheet fab sample.
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    final String SERVER_DISCONNECT = "서버접속 에러!!";
 
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
@@ -46,10 +60,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        setTitle(R.string.app_name);
         setContentView(R.layout.activity_main);
 
+        checkServerTag();
+
         setupActionBar();
         setupDrawer();
 //        setupFab();
         setupTabs();
+
+        BadgeUtil.setBadge(this, 1);
     }
 
     @Override
@@ -82,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //    private DisplayImageOptions options;
 
     private NavigationView navigationView;
+
     private void setupDrawer() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
@@ -112,6 +131,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                switch (menuItem.getItemId()) {
+                    case R.id.menu_drawer_member_data:
+                        if (mDbTag.getTagList().get(0) == 0) {
+//                            initServerDataWithProgress();
+                            initServerData();
+                        } else if (mRequireUpdateData) {
+//                            updateServerDataWithProgress();
+                            updateServerData();
+                        } else {
+                            Toast.makeText(MainActivity.this, "최신 데이터입니다.", Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+
+                    default:
+                        return false;
+                }
+            }
+        });
 //        options = new DisplayImageOptions.Builder()
 //                .showImageOnLoading(R.drawable.ic_face_white_48dp)
 //                .showImageForEmptyUri(R.drawable.ic_face_white_48dp)
@@ -138,6 +180,155 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             bar.setTitle(R.string.watchMod);
             imageView.setImageResource(R.drawable.ic_face_white_48dp);
         }
+
+
+    }
+
+    private CheckTagResult mServerTag;
+    private CheckTagResult mDbTag;
+    private List<Boolean> mDownloadList;
+    private boolean mRequireUpdateData;
+
+    private void checkServerTag() {
+        mDownloadList = new ArrayList<>();
+        mRequireUpdateData = false;
+
+        for (int i = 0; i < 6; i++) {
+            mDownloadList.add(false);
+        }
+
+        mDbTag = DatabaseManager.getInstance(MainActivity.this).checkTag();
+        NetworkManager.getInstance().checkServerTag(new NetworkManager.OnNetResultListener<CheckTagResult>() {
+            @Override
+            public void onSuccess(CheckTagResult result) {
+                mServerTag = result;
+
+                for (int i = 0; i < mServerTag.getTagList().size(); i++) {
+                    if (mServerTag.getTagList().get(i) > mDbTag.getTagList().get(i)) {
+                        mDownloadList.set(i, true);
+                        mRequireUpdateData = true;
+                    } else {
+                        mDownloadList.set(i, false);
+                    }
+                }
+            }
+
+            @Override
+            public void onFail(int code) {
+                Toast.makeText(MainActivity.this, SERVER_DISCONNECT, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private boolean mUpdateSeverDataState;
+
+    private void updateServerData() {
+        showProgressDialog();
+
+        progressDialog.setMessage("데이터를 다운로드합니다...");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        progressThread.setState(ProgressThread.STATE_DONE);
+    }
+
+    private void updateServerDataWithProgress() {
+
+        final ProgressDialog progDialog = new ProgressDialog(MainActivity.this);
+        progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progDialog.setMessage("데이터 업데이트 중입니다...");
+        progDialog.setCanceledOnTouchOutside(false);
+        progDialog.show();
+
+        //Thread 사용은 선택이 아니라 필수
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //TODO : 시간이 걸리는 처리 삽입
+                mUpdateSeverDataState = true;
+                while (mUpdateSeverDataState) {
+                    //서버 업데이트
+                    progressThread.setState(ProgressThread.STATE_DONE);
+
+                }
+                progDialog.dismiss();
+            }
+        }).start();
+    }
+
+    private boolean mInitSeverDataState;
+
+    private void initServerData() {
+        showProgressDialog();
+
+        progressDialog.setMessage("데이터를 다운로드합니다...");
+        //서버 최초 동기화
+        NetworkManager.getInstance().requestInitDatabase(new NetworkManager.OnNetResultListener<File>() {
+            @Override
+            public void onSuccess(File result) {
+
+                progressDialog.setMessage("데이터베이스에 적용합니다....");
+                if (!DatabaseManager.getInstance(MainActivity.this).initDatabase(result)) {
+                    Toast.makeText(MainActivity.this, "데이터베이스 초기화 실패", Toast.LENGTH_SHORT).show();
+                }
+
+                //다운로드 파일 삭제
+                result.delete();
+                progressThread.setState(ProgressThread.STATE_DONE);
+            }
+
+            @Override
+            public void onFail(int code) {
+                Toast.makeText(MainActivity.this, SERVER_DISCONNECT, Toast.LENGTH_SHORT).show();
+                progressThread.setState(ProgressThread.STATE_DONE);
+            }
+        });
+    }
+
+    private void initServerDataWithProgress() {
+
+        final ProgressDialog progDialog = new ProgressDialog(MainActivity.this);
+        progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progDialog.setMessage("데이터를 다운로드합니다...");
+        progDialog.setCanceledOnTouchOutside(false);
+        progDialog.show();
+
+        //Thread 사용은 선택이 아니라 필수
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //TODO : 시간이 걸리는 처리 삽입
+                mInitSeverDataState = true;
+                while (mInitSeverDataState) {
+                    //서버 최초 동기화
+                    NetworkManager.getInstance().requestInitDatabase(new NetworkManager.OnNetResultListener<File>() {
+                        @Override
+                        public void onSuccess(File result) {
+
+                            progDialog.setMessage("데이터베이스에 적용합니다....");
+                            if (!DatabaseManager.getInstance(MainActivity.this).initDatabase(result)) {
+                                Toast.makeText(MainActivity.this, "데이터베이스 초기화 실패", Toast.LENGTH_SHORT).show();
+                            }
+
+                            //다운로드 파일 삭제
+                            result.delete();
+                            mInitSeverDataState = false;
+                        }
+
+                        @Override
+                        public void onFail(int code) {
+                            Toast.makeText(MainActivity.this, SERVER_DISCONNECT, Toast.LENGTH_SHORT).show();
+                            mInitSeverDataState = false;
+                        }
+                    });
+
+                }
+                progDialog.dismiss();
+            }
+        }).start();
     }
 
     /**
@@ -275,11 +466,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(this, R.string.sheet_item_pressed, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, R.string.sheet_item_pressed, Toast.LENGTH_SHORT).show();
 //        materialSheetFab.hideSheet();
     }
 
     private Menu menu;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
@@ -364,5 +556,85 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent(this, MainLoginTypeActivity.class);
         startActivity(intent);
         finish();
+    }
+
+
+    private ProgressDialog progressDialog;
+    private ProgressThread progressThread;
+
+    private void showProgressDialog() {
+        progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//        progressDialog.setMessage("데이터 업데이트 중입니다...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+
+        progressThread = new ProgressThread(handler);
+        progressThread.start();
+
+//        //Thread 사용은 선택이 아니라 필수
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                //TODO : 시간이 걸리는 처리 삽입
+//                boolean state = true;
+//                while (state) {
+//                    try {
+//                        for (int i = 0; i < 50; i++) {
+//                            Thread.sleep(100);
+//                        }
+//                    } catch (InterruptedException e) {
+//
+//                    }
+//                    state = false;
+//                }
+//                progressDialog.dismiss();
+//            }
+//        }).start();
+    }
+
+    final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+//            int total = msg.getData().getInt("total");
+//            progressDialog.setProgress(total);
+//            if(total>=100){
+//                progressThread.setState(ProgressThread.STATE_DONE);
+//            }
+            progressDialog.dismiss();
+        }
+    };
+
+
+    private class ProgressThread extends Thread {
+        Handler mHandler;
+        final static int STATE_DONE = 0;
+        final static int STATE_RUNNING = 1;
+        int mState;
+        int total;
+
+        ProgressThread(Handler h) {
+            mHandler = h;
+        }
+
+        @Override
+        public void run() {
+            mState = STATE_RUNNING;
+            total = 0;
+            while (mState == STATE_RUNNING) {
+//                try {
+//                    sleep(100);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+            }
+
+            mHandler.sendEmptyMessage(0);
+//            progressDialog.dismiss();
+        }
+
+        public void setState(int state) {
+            mState = state;
+        }
     }
 }
