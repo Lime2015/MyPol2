@@ -37,6 +37,11 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
 
+        <activity android:name=".activity.ChangeProfileDialogActivity"
+            android:theme="@style/dialog_light" />
+
+        <activity android:name=".activity.ChangeSettingsDialogActivity"
+            android:theme="@style/dialog_light" />
         <!--<activity-->
             <!--android:name=".activity.AssemblymenListActivity"-->
             <!--android:launchMode="singleTask"-->

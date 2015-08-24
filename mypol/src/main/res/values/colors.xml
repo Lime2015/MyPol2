@@ -32,4 +32,6 @@
     <color name="blue_grey_400">#78909C</color>
     <color name="lime_400">#D4E157</color>
 
+    <color name="black">#FF000000</color>
+    <color name="whitegrey">#FFF2F2F2</color>
 </resources>

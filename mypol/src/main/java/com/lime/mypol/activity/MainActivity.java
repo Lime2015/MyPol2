@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-
+                Intent intent;
                 switch (menuItem.getItemId()) {
                     case R.id.menu_drawer_member_data:
                         if (mDbTag.getTagList().get(0) == 0) {
@@ -147,6 +147,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         } else {
                             Toast.makeText(MainActivity.this, "최신 데이터입니다.", Toast.LENGTH_SHORT).show();
                         }
+                        return true;
+
+                    case R.id.menu_drawer_member_profile:
+                        intent = new Intent(MainActivity.this, ChangeProfileDialogActivity.class);
+                        startActivity(intent);
+                        return true;
+
+                    case R.id.menu_drawer_member_setting:
+                        intent = new Intent(MainActivity.this, ChangeSettingsDialogActivity.class);
+                        startActivity(intent);
                         return true;
 
                     default:
