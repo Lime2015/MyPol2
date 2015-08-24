@@ -220,7 +220,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private boolean mUpdateSeverDataState;
 
     private void updateServerData() {
         showProgressDialog();
@@ -233,33 +232,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         progressThread.setState(ProgressThread.STATE_DONE);
+        checkServerTag();
     }
 
-    private void updateServerDataWithProgress() {
+//    private boolean mUpdateSeverDataState;
+//
+//    private void updateServerDataWithProgress() {
+//
+//        final ProgressDialog progDialog = new ProgressDialog(MainActivity.this);
+//        progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//        progDialog.setMessage("데이터 업데이트 중입니다...");
+//        progDialog.setCanceledOnTouchOutside(false);
+//        progDialog.show();
+//
+//        //Thread 사용은 선택이 아니라 필수
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                //TODO : 시간이 걸리는 처리 삽입
+//                mUpdateSeverDataState = true;
+//                while (mUpdateSeverDataState) {
+//                    //서버 업데이트
+//                    progressThread.setState(ProgressThread.STATE_DONE);
+//
+//                }
+//                progDialog.dismiss();
+//            }
+//        }).start();
+//    }
 
-        final ProgressDialog progDialog = new ProgressDialog(MainActivity.this);
-        progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progDialog.setMessage("데이터 업데이트 중입니다...");
-        progDialog.setCanceledOnTouchOutside(false);
-        progDialog.show();
-
-        //Thread 사용은 선택이 아니라 필수
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //TODO : 시간이 걸리는 처리 삽입
-                mUpdateSeverDataState = true;
-                while (mUpdateSeverDataState) {
-                    //서버 업데이트
-                    progressThread.setState(ProgressThread.STATE_DONE);
-
-                }
-                progDialog.dismiss();
-            }
-        }).start();
-    }
-
-    private boolean mInitSeverDataState;
 
     private void initServerData() {
         showProgressDialog();
@@ -278,6 +279,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //다운로드 파일 삭제
                 result.delete();
                 progressThread.setState(ProgressThread.STATE_DONE);
+                checkServerTag();
             }
 
             @Override
@@ -288,48 +290,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void initServerDataWithProgress() {
+//    private boolean mInitSeverDataState;
 
-        final ProgressDialog progDialog = new ProgressDialog(MainActivity.this);
-        progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progDialog.setMessage("데이터를 다운로드합니다...");
-        progDialog.setCanceledOnTouchOutside(false);
-        progDialog.show();
-
-        //Thread 사용은 선택이 아니라 필수
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //TODO : 시간이 걸리는 처리 삽입
-                mInitSeverDataState = true;
-                while (mInitSeverDataState) {
-                    //서버 최초 동기화
-                    NetworkManager.getInstance().requestInitDatabase(new NetworkManager.OnNetResultListener<File>() {
-                        @Override
-                        public void onSuccess(File result) {
-
-                            progDialog.setMessage("데이터베이스에 적용합니다....");
-                            if (!DatabaseManager.getInstance(MainActivity.this).initDatabase(result)) {
-                                Toast.makeText(MainActivity.this, "데이터베이스 초기화 실패", Toast.LENGTH_SHORT).show();
-                            }
-
-                            //다운로드 파일 삭제
-                            result.delete();
-                            mInitSeverDataState = false;
-                        }
-
-                        @Override
-                        public void onFail(int code) {
-                            Toast.makeText(MainActivity.this, SERVER_DISCONNECT, Toast.LENGTH_SHORT).show();
-                            mInitSeverDataState = false;
-                        }
-                    });
-
-                }
-                progDialog.dismiss();
-            }
-        }).start();
-    }
+//    private void initServerDataWithProgress() {
+//
+//        final ProgressDialog progDialog = new ProgressDialog(MainActivity.this);
+//        progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//        progDialog.setMessage("데이터를 다운로드합니다...");
+//        progDialog.setCanceledOnTouchOutside(false);
+//        progDialog.show();
+//
+//        //Thread 사용은 선택이 아니라 필수
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                //TODO : 시간이 걸리는 처리 삽입
+//                mInitSeverDataState = true;
+//                while (mInitSeverDataState) {
+//                    //서버 최초 동기화
+//                    NetworkManager.getInstance().requestInitDatabase(new NetworkManager.OnNetResultListener<File>() {
+//                        @Override
+//                        public void onSuccess(File result) {
+//
+//                            progDialog.setMessage("데이터베이스에 적용합니다....");
+//                            if (!DatabaseManager.getInstance(MainActivity.this).initDatabase(result)) {
+//                                Toast.makeText(MainActivity.this, "데이터베이스 초기화 실패", Toast.LENGTH_SHORT).show();
+//                            }
+//
+//                            //다운로드 파일 삭제
+//                            result.delete();
+//                            mInitSeverDataState = false;
+//                            checkServerTag();
+//                        }
+//
+//                        @Override
+//                        public void onFail(int code) {
+//                            Toast.makeText(MainActivity.this, SERVER_DISCONNECT, Toast.LENGTH_SHORT).show();
+//                            mInitSeverDataState = false;
+//                        }
+//                    });
+//
+//                }
+//                progDialog.dismiss();
+//            }
+//        }).start();
+//    }
 
     /**
      * Sets up the tabs.
