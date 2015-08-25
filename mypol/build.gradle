@@ -45,4 +45,5 @@ dependencies {
     compile project(':androidPullToRefreshLibrary')
     compile 'com.gordonwong:material-sheet-fab:1.0.1'
     compile 'com.android.support:design:22.2.1'
+//    compile 'com.google.android.gms:play-services:7.8.0'
 }

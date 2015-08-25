@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.lime.mypol.application.GlobalApplication;
+import com.lime.mypol.result.AddressComponents;
+import com.lime.mypol.result.AddressResult;
 import com.lime.mypol.result.CheckMemberResult;
 import com.lime.mypol.result.CheckTagResult;
 import com.lime.mypol.models.Assemblyman;
@@ -91,7 +93,7 @@ public class NetworkManager {
 
     final String GOOGLE_ADDRESS_URL = "http://maps.googleapis.com/maps/api/geocode/json";
 
-    public void searchAddress(String input, final OnNetResultListener<SearchGoogleMapResult> listener) {
+    public void searchAddress(String input, final OnNetResultListener<List<String>> listener) {
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
@@ -104,7 +106,7 @@ public class NetworkManager {
             e.printStackTrace();
         }
 
-        client.post(GOOGLE_ADDRESS_URL, new AsyncHttpResponseHandler() {
+        client.post(GOOGLE_ADDRESS_URL, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
@@ -112,7 +114,16 @@ public class NetworkManager {
                 String str = new String(responseBody);
 //                Log.d(TAG, "google result:" + str);
                 SearchGoogleMapResult result = gson.fromJson(is, SearchGoogleMapResult.class);
-                listener.onSuccess(result);
+                List<String> address = new ArrayList<String>();
+                if(result.getStatus().equals("OK")){
+                    for(AddressResult ar : result.getResults()){
+                        String[] array = ar.getFormatted_address().split(" ");
+                        if(array[0].equals("대한민국")){
+                            address.add(ar.getFormatted_address());
+                        }
+                    }
+                }
+                listener.onSuccess(address);
             }
 
             @Override

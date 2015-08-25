@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.lime.mypol.R;
 import com.lime.mypol.manager.NetworkManager;
 import com.lime.mypol.models.MemberInfo;
+import com.lime.mypol.result.AddressResult;
 import com.lime.mypol.result.CheckMemberResult;
 import com.lime.mypol.result.SearchGoogleMapResult;
 
@@ -82,12 +83,12 @@ public class GoogleMapSearchDialogActivity extends Activity {
 
                 if (!TextUtils.isEmpty(keyword)) {
                     //google search
-                    NetworkManager.getInstance().searchAddress(keyword, new NetworkManager.OnNetResultListener<SearchGoogleMapResult>() {
+                    NetworkManager.getInstance().searchAddress(keyword, new NetworkManager.OnNetResultListener<List<String>>() {
                         @Override
-                        public void onSuccess(SearchGoogleMapResult result) {
-                            Log.d(TAG, "google result count : " + result.getResults().size());
+                        public void onSuccess(List<String> result) {
+                            Log.d(TAG, "google result count : " + result.size());
                             listAddress.clear();
-                            listAddress.addAll(result.getResults());
+                            listAddress.addAll(result);
                             adapter.notifyDataSetChanged();
                         }
 

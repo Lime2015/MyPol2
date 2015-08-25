@@ -6,12 +6,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE" />
 
-    <uses-feature
-        android:glEsVersion="0x00020000"
-        android:required="true"/>
+    <!--<uses-feature-->
+        <!--android:glEsVersion="0x00020000"-->
+        <!--android:required="true" />-->
 
     <!--android:label="@string/app_name"-->
     <application
@@ -41,88 +41,90 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
 
-        <activity android:name=".activity.ChangeProfileDialogActivity"
+        <activity
+            android:name=".activity.ChangeProfileDialogActivity"
             android:theme="@style/dialog_light" />
 
-        <activity android:name=".activity.ChangeSettingsDialogActivity"
+        <activity
+            android:name=".activity.ChangeSettingsDialogActivity"
             android:theme="@style/dialog_light" />
 
         <!--<activity-->
-            <!--android:name=".activity.AssemblymenListActivity"-->
-            <!--android:launchMode="singleTask"-->
-            <!--android:windowSoftInputMode="adjustResize">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.SEARCH" />-->
-            <!--</intent-filter>-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-            <!--</intent-filter>-->
+        <!--android:name=".activity.AssemblymenListActivity"-->
+        <!--android:launchMode="singleTask"-->
+        <!--android:windowSoftInputMode="adjustResize">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.SEARCH" />-->
+        <!--</intent-filter>-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.VIEW" />-->
+        <!--</intent-filter>-->
         <!--</activity>-->
 
         <!--<activity-->
-            <!--android:name=".activity.AssemblymanActivity"-->
-            <!--android:launchMode="singleTask"-->
-            <!--android:windowSoftInputMode="adjustResize">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.PARENT_ACTIVITY"-->
-                <!--android:value=".activity.AssemblymenListActivity" />-->
+        <!--android:name=".activity.AssemblymanActivity"-->
+        <!--android:launchMode="singleTask"-->
+        <!--android:windowSoftInputMode="adjustResize">-->
+        <!--<meta-data-->
+        <!--android:name="android.support.PARENT_ACTIVITY"-->
+        <!--android:value=".activity.AssemblymenListActivity" />-->
         <!--</activity>-->
 
         <!--<activity-->
-            <!--android:name=".activity.BillListActivity"-->
-            <!--android:launchMode="singleTask"-->
-            <!--android:windowSoftInputMode="adjustResize">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.SEARCH" />-->
-            <!--</intent-filter>-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-            <!--</intent-filter>-->
+        <!--android:name=".activity.BillListActivity"-->
+        <!--android:launchMode="singleTask"-->
+        <!--android:windowSoftInputMode="adjustResize">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.SEARCH" />-->
+        <!--</intent-filter>-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.VIEW" />-->
+        <!--</intent-filter>-->
         <!--</activity>-->
 
         <!--<activity-->
-            <!--android:name=".activity.BillActivity"-->
-            <!--android:launchMode="singleTask"-->
-            <!--android:windowSoftInputMode="adjustResize">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.PARENT_ACTIVITY"-->
-                <!--android:value=".activity.BillListActivity" />-->
+        <!--android:name=".activity.BillActivity"-->
+        <!--android:launchMode="singleTask"-->
+        <!--android:windowSoftInputMode="adjustResize">-->
+        <!--<meta-data-->
+        <!--android:name="android.support.PARENT_ACTIVITY"-->
+        <!--android:value=".activity.BillListActivity" />-->
         <!--</activity>-->
 
         <!--<activity-->
-            <!--android:name=".activity.HallOfFameActivity"-->
-            <!--android:launchMode="singleTask"-->
-            <!--android:windowSoftInputMode="adjustResize">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.SEARCH" />-->
-            <!--</intent-filter>-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-            <!--</intent-filter>-->
+        <!--android:name=".activity.HallOfFameActivity"-->
+        <!--android:launchMode="singleTask"-->
+        <!--android:windowSoftInputMode="adjustResize">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.SEARCH" />-->
+        <!--</intent-filter>-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.VIEW" />-->
+        <!--</intent-filter>-->
         <!--</activity>-->
 
         <!--<activity-->
-            <!--android:name=".activity.PublicOpinionsActivity"-->
-            <!--android:launchMode="singleTask"-->
-            <!--android:windowSoftInputMode="adjustResize">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.SEARCH" />-->
-            <!--</intent-filter>-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-            <!--</intent-filter>-->
+        <!--android:name=".activity.PublicOpinionsActivity"-->
+        <!--android:launchMode="singleTask"-->
+        <!--android:windowSoftInputMode="adjustResize">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.SEARCH" />-->
+        <!--</intent-filter>-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.VIEW" />-->
+        <!--</intent-filter>-->
         <!--</activity>-->
 
         <!--<activity-->
-            <!--android:name=".activity.MypageActivity"-->
-            <!--android:launchMode="singleTask"-->
-            <!--android:windowSoftInputMode="adjustResize">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.SEARCH" />-->
-            <!--</intent-filter>-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-            <!--</intent-filter>-->
+        <!--android:name=".activity.MypageActivity"-->
+        <!--android:launchMode="singleTask"-->
+        <!--android:windowSoftInputMode="adjustResize">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.SEARCH" />-->
+        <!--</intent-filter>-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.VIEW" />-->
+        <!--</intent-filter>-->
         <!--</activity>-->
 
         <activity
@@ -132,22 +134,23 @@
 
         <activity
             android:name=".activity.ExtraInfoDialogActivity"
-            android:theme="@style/dialog_light"/>
+            android:theme="@style/dialog_light" />
 
         <activity
             android:name=".activity.GoogleMapSearchDialogActivity"
-            android:theme="@style/dialog_light"/>
+            android:theme="@style/dialog_light" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="6e231dd7152c7be4ab8946c072436df4" />
 
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAwbTWebrPi8jg_he_Zei3t_ENE4fsgIks"/>
+        <!--<meta-data-->
+            <!--android:name="com.google.android.geo.API_KEY"-->
+            <!--android:value="AIzaSyAwbTWebrPi8jg_he_Zei3t_ENE4fsgIks" />-->
 
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+        <!--<meta-data-->
+            <!--android:name="com.google.android.gms.version"-->
+            <!--android:value="@integer/google_play_services_version" />-->
 
 
     </application>

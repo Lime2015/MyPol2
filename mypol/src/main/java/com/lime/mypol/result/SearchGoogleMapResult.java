@@ -6,14 +6,14 @@ import java.util.List;
  * Created by seongsan on 2015-08-25.
  */
 public class SearchGoogleMapResult {
-    private List<String> results;
+    private List<AddressResult> results;
     private String status;
 
-    public List<String> getResults() {
+    public List<AddressResult> getResults() {
         return results;
     }
 
-    public void setResults(List<String> results) {
+    public void setResults(List<AddressResult> results) {
         this.results = results;
     }
 
