@@ -16,6 +16,7 @@ import com.lime.mypol.models.GeneralMeeting;
 import com.lime.mypol.models.MemberInfo;
 import com.lime.mypol.models.PartyHistory;
 import com.lime.mypol.models.Vote;
+import com.lime.mypol.result.SearchGoogleMapResult;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.MySSLSocketFactory;
@@ -90,7 +91,7 @@ public class NetworkManager {
 
     final String GOOGLE_ADDRESS_URL = "http://maps.googleapis.com/maps/api/geocode/json";
 
-    public void searchAddress(String input, final OnNetResultListener<List<String>> listener) {
+    public void searchAddress(String input, final OnNetResultListener<SearchGoogleMapResult> listener) {
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
@@ -108,7 +109,9 @@ public class NetworkManager {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
                 Gson gson = new GsonBuilder().create();
-                List<String> result = gson.fromJson(is, new TypeToken<List<String>>() {}.getType());
+                String str = new String(responseBody);
+//                Log.d(TAG, "google result:" + str);
+                SearchGoogleMapResult result = gson.fromJson(is, SearchGoogleMapResult.class);
                 listener.onSuccess(result);
             }
 

@@ -126,7 +126,7 @@ public class ExtraInfoDialogActivity extends Activity {
 
     private void setSize() {
         Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        int width = (int) (display.getWidth() * 0.9); //Display 사이즈의 80%
+        int width = (int) (display.getWidth() * 0.8); //Display 사이즈의 80%
         int height = (int) (display.getHeight() * 0.8);  //Display 사이즈의 80%
         int dHeight = getWindow().getAttributes().height;
         getWindow().getAttributes().width = width;

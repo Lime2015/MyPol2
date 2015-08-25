@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
@@ -24,6 +25,7 @@ import com.lime.mypol.R;
 import com.lime.mypol.manager.NetworkManager;
 import com.lime.mypol.models.MemberInfo;
 import com.lime.mypol.result.CheckMemberResult;
+import com.lime.mypol.result.SearchGoogleMapResult;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,7 +38,7 @@ import java.util.List;
  */
 public class GoogleMapSearchDialogActivity extends Activity {
 
-    private final String TAG = "GoogleMapSearchDialogActivity";
+    private final String TAG = "GoogleMapSearch";
 
     ImageView button;
     EditText input;
@@ -80,11 +82,12 @@ public class GoogleMapSearchDialogActivity extends Activity {
 
                 if (!TextUtils.isEmpty(keyword)) {
                     //google search
-                    NetworkManager.getInstance().searchAddress(keyword, new NetworkManager.OnNetResultListener<List<String>>() {
+                    NetworkManager.getInstance().searchAddress(keyword, new NetworkManager.OnNetResultListener<SearchGoogleMapResult>() {
                         @Override
-                        public void onSuccess(List<String> result) {
+                        public void onSuccess(SearchGoogleMapResult result) {
+                            Log.d(TAG, "google result count : " + result.getResults().size());
                             listAddress.clear();
-                            listAddress.addAll(result);
+                            listAddress.addAll(result.getResults());
                             adapter.notifyDataSetChanged();
                         }
 
@@ -102,7 +105,7 @@ public class GoogleMapSearchDialogActivity extends Activity {
 
     private void setSize() {
         Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        int width = (int) (display.getWidth() * 0.9); //Display 사이즈의 80%
+        int width = (int) (display.getWidth() * 0.7); //Display 사이즈의 80%
         int height = (int) (display.getHeight() * 0.8);  //Display 사이즈의 80%
         int dHeight = getWindow().getAttributes().height;
         getWindow().getAttributes().width = width;
