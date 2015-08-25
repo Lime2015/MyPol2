@@ -37,6 +37,11 @@
     <string name="cancel">취소</string>
     <string name="mypage_profile">내 정보</string>
     <string name="mypage_settings">설정</string>
+    <string name="extra_info">추가정보입력</string>
+    <string name="complete">입력완료</string>
+    <string name="address_insert">주소 입력</string>
+    <string name="birthday_insert">생일 입력</string>
+    <string name="gender_insert">성별 입력</string>
 
     <string-array name="gender_types">
         <item>남</item>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/extra_info_dialog"
+    android:layout_gravity="center|center_vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/dialog_title"
+        android:text="@string/extra_info" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+        <TextView
+            style="@style/dialog_body"
+            android:text="@string/address_insert"
+            android:layout_width="200dp" />
+
+        <TextView
+            android:id="@+id/text_address"
+            style="@style/dialog_body_box"
+            android:hint="경기도 과천시 별양로12"
+            android:layout_width="200dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+        <TextView
+            style="@style/dialog_body"
+            android:text="@string/birthday_insert"
+            android:layout_width="200dp" />
+
+        <TextView
+            android:id="@+id/text_birthday"
+            style="@style/dialog_body_box"
+            android:hint="1995/12/24"
+            android:layout_width="100dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+        <TextView
+            style="@style/dialog_body"
+            android:text="@string/gender_insert"
+            android:layout_width="200dp" />
+
+        <RadioGroup
+            style="@style/dialog_body"
+            android:layout_margin="0dp"
+            android:id="@+id/radiogroup_gender"
+            android:checkedButton="@+id/radio_male"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@id/radio_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="남" />
+
+            <RadioButton
+                android:id="@+id/radio_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="여" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <TextView
+        android:textColor="@color/material_orange_800"
+        android:layout_gravity="center"
+        style="@style/dialog_button"
+        android:id="@+id/text_complete"
+        android:text="@string/complete" />
+
+</LinearLayout>

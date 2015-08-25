@@ -19,8 +19,8 @@ import com.lime.mypol.R;
 public class ChangeProfileDialogActivity extends Activity implements View.OnClickListener {
 
     private LinearLayout mLayout;
-    private int pWidth;
-    private int pHeight;
+//    private int pWidth;
+//    private int pHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +41,8 @@ public class ChangeProfileDialogActivity extends Activity implements View.OnClic
         setSize();
     }
 
-    private int mWidth;
-    private int mHeight;
+//    private int mWidth;
+//    private int mHeight;
 
     private void setSize() {
 //        ViewTreeObserver vto = mLayout.getViewTreeObserver();

@@ -149,4 +149,35 @@
         <item name="@android:windowBackground">@color/whitegrey</item>
         <item name="@android:textColor">@color/black</item>
     </style>
+
+    <style name="dialog_title">
+        <item name="android:textSize">@dimen/abc_text_size_headline_material</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="dialog_button">
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="dialog_body">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="dialog_body_box" parent="dialog_body">
+        <item name="android:background">@drawable/border</item>
+        <item name="android:padding">2dp</item>
+    </style>
+
 </resources>

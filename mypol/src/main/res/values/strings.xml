@@ -28,5 +28,10 @@
     <string name="cancel">Cancel</string>
     <string name="mypage_profile">My Profile</string>
     <string name="mypage_settings">Settings</string>
+    <string name="extra_info">Extra-Info</string>
+    <string name="complete">Complete</string>
+    <string name="address_insert">Insert Address</string>
+    <string name="birthday_insert">Insert Birthday</string>
+    <string name="gender_insert">Select Gender</string>
 
 </resources>
