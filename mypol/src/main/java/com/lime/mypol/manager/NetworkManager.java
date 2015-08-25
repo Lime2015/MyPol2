@@ -30,339 +30,392 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NetworkManager {
 
-	private static String TAG = "NetworkManager";
+    private static String TAG = "NetworkManager";
 
-	private static NetworkManager instance;
-	public static NetworkManager getInstance() {
-		if (instance == null) {
-			instance = new NetworkManager();
-		}
-		return instance;
-	}
-	
-	AsyncHttpClient client;
-	private NetworkManager() {
-		try {
-			KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-			trustStore.load(null, null);
-			MySSLSocketFactory socketFactory = new MySSLSocketFactory(trustStore);
-			socketFactory.setHostnameVerifier(MySSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-			client = new AsyncHttpClient();
-			client.setSSLSocketFactory(socketFactory);			
-			client.setCookieStore(new PersistentCookieStore(GlobalApplication.getContext()));
-			client.setTimeout(30000);
-		} catch (KeyStoreException e) {
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (CertificateException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (KeyManagementException e) {
-			e.printStackTrace();
-		} catch (UnrecoverableKeyException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public interface OnNetResultListener<T> {
-		public void onSuccess(T result);
-		public void onFail(int code);
-	}
+    private static NetworkManager instance;
 
+    public static NetworkManager getInstance() {
+        if (instance == null) {
+            instance = new NetworkManager();
+        }
+        return instance;
+    }
 
-	final String SERVER_URL = "http://52.69.102.82:8080/WAServer";
-	final String CHECK_TAG = "/checkTag.do";
-	public void checkServerTag(final OnNetResultListener<CheckTagResult> listener){
+    AsyncHttpClient client;
 
-		Log.d(TAG, "checkServerTag start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    private NetworkManager() {
+        try {
+            KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            trustStore.load(null, null);
+            MySSLSocketFactory socketFactory = new MySSLSocketFactory(trustStore);
+            socketFactory.setHostnameVerifier(MySSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            client = new AsyncHttpClient();
+            client.setSSLSocketFactory(socketFactory);
+            client.setCookieStore(new PersistentCookieStore(GlobalApplication.getContext()));
+            client.setTimeout(30000);
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (UnrecoverableKeyException e) {
+            e.printStackTrace();
+        }
+    }
 
-		AsyncHttpClient client = new AsyncHttpClient();
+    public interface OnNetResultListener<T> {
+        public void onSuccess(T result);
 
-		String url = SERVER_URL + CHECK_TAG;
-		client.post(url, new AsyncHttpResponseHandler() {
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-				InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
-				Gson gson = new GsonBuilder().create();
-				CheckTagResult result = gson.fromJson(is, CheckTagResult.class);
-				listener.onSuccess(result);
-			}
-
-			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-				listener.onFail(statusCode);
-			}
-		});
-
-	}
-
-	final String INIT_DATABASE = "/wadb.sqlite";
-	public void requestInitDatabase(final OnNetResultListener<File> listener){
-
-		Log.d(TAG, "requestInitDatabase start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-		AsyncHttpClient client = new AsyncHttpClient();
-
-		String url = SERVER_URL + INIT_DATABASE;
-		client.post(url, new AsyncHttpResponseHandler() {
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-				File result=new File(Environment.getExternalStorageDirectory(), "wadb.sqlite");
-
-				if (result.exists()) {
-					result.delete();
-				}
-
-				try {
-					FileOutputStream fos=new FileOutputStream(result.getPath());
-					fos.write(responseBody);
-					fos.close();
-				}
-				catch (java.io.IOException e) {
-					listener.onFail(-999);
-					return;
-				}
+        public void onFail(int code);
+    }
 
 
-				listener.onSuccess(result);
-			}
+    final String GOOGLE_ADDRESS_URL = "http://maps.googleapis.com/maps/api/geocode/json";
 
-			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-				listener.onFail(statusCode);
-			}
-		});
+    public void searchAddress(String input, final OnNetResultListener<List<String>> listener) {
 
-	}
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        try {
+            params.put("address", URLEncoder.encode(input, "utf-8"));
+            params.put("sensor", true);
+            params.put("resion", "ko");
+            params.put("language", "ko");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
-	final String CHECK_MEMBER = "/checkMember.do";
-	public void checkMemberInServer(MemberInfo kakaoMemberInfo, final OnNetResultListener<CheckMemberResult> listener){
+        client.post(GOOGLE_ADDRESS_URL, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
+                Gson gson = new GsonBuilder().create();
+                List<String> result = gson.fromJson(is, new TypeToken<List<String>>() {}.getType());
+                listener.onSuccess(result);
+            }
 
-		Log.d(TAG, "checkMemberInServer start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                listener.onFail(statusCode);
+            }
+        });
 
-		AsyncHttpClient client = new AsyncHttpClient();
-		RequestParams params = new RequestParams();
-		Gson gson = new GsonBuilder().create();
-		params.put("memberJSON", gson.toJson(kakaoMemberInfo));
+    }
 
-		String url = SERVER_URL + CHECK_MEMBER;
-		client.post(url, params, new AsyncHttpResponseHandler() {
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-				InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
-				Gson gson = new GsonBuilder().create();
-				CheckMemberResult result = gson.fromJson(is, CheckMemberResult.class);
-				listener.onSuccess(result);
-			}
+    final String SERVER_URL = "http://52.69.102.82:8080/WAServer";
+    final String CHECK_TAG = "/checkTag.do";
 
-			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-				listener.onFail(statusCode);
-			}
-		});
+    public void checkServerTag(final OnNetResultListener<CheckTagResult> listener) {
 
-	}
+        Log.d(TAG, "checkServerTag start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-	final String SAVE_MEMBER = "/saveMember.do";
-	public void saveMemberServer(MemberInfo kakaoMemberInfo, final OnNetResultListener<CheckMemberResult> listener){
+        AsyncHttpClient client = new AsyncHttpClient();
 
-		Log.d(TAG, "saveMemberServer start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        String url = SERVER_URL + CHECK_TAG;
+        client.post(url, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
+                Gson gson = new GsonBuilder().create();
+//                CheckTagResult result = gson.fromJson(is, CheckTagResult.class);
+//                listener.onSuccess(result);
+            }
 
-		AsyncHttpClient client = new AsyncHttpClient();
-		RequestParams params = new RequestParams();
-		Gson gson = new GsonBuilder().create();
-		params.put("memberJSON", gson.toJson(kakaoMemberInfo));
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                listener.onFail(statusCode);
+            }
+        });
 
-		String url = SERVER_URL + SAVE_MEMBER;
-		client.post(url, params, new AsyncHttpResponseHandler() {
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-				InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
-				Gson gson = new GsonBuilder().create();
-				CheckMemberResult result = gson.fromJson(is, CheckMemberResult.class);
-				listener.onSuccess(result);
-			}
+    }
 
-			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-				listener.onFail(statusCode);
-			}
-		});
+    final String INIT_DATABASE = "/wadb.sqlite";
 
-	}
+    public void requestInitDatabase(final OnNetResultListener<File> listener) {
 
-	final String REQUEST_ASSEMBLYMAN = "/requestAssemblyman.do";
-	public void requestAssemblyman(int tag, final OnNetResultListener<List<Assemblyman>> listener) {
-		Log.d(TAG, "requestAssemblyman start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        Log.d(TAG, "requestInitDatabase start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-		AsyncHttpClient client = new AsyncHttpClient();
-		RequestParams params = new RequestParams();
-		params.put("tag", tag);
+        AsyncHttpClient client = new AsyncHttpClient();
 
-		String url = SERVER_URL + REQUEST_ASSEMBLYMAN;
-		client.post(url, params, new AsyncHttpResponseHandler() {
+        String url = SERVER_URL + INIT_DATABASE;
+        client.post(url, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                File result = new File(Environment.getExternalStorageDirectory(), "wadb.sqlite");
 
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-				InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
-				Gson gson = new GsonBuilder().create();
-				List<Assemblyman> result = gson.fromJson(is, new TypeToken<List<Assemblyman>>() {}.getType());
-				listener.onSuccess(result);
-			}
+                if (result.exists()) {
+                    result.delete();
+                }
 
-			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-				listener.onFail(statusCode);
-			}
-		});
-	}
+                try {
+                    FileOutputStream fos = new FileOutputStream(result.getPath());
+                    fos.write(responseBody);
+                    fos.close();
+                } catch (java.io.IOException e) {
+                    listener.onFail(-999);
+                    return;
+                }
 
-	final String REQUEST_BILL = "/requestBill.do";
-	public void requestBill(int tag, final OnNetResultListener<List<Bill>> listener) {
-		Log.d(TAG, "requestBill start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-		AsyncHttpClient client = new AsyncHttpClient();
-		RequestParams params = new RequestParams();
-		params.put("tag", tag);
+                listener.onSuccess(result);
+            }
 
-		String url = SERVER_URL + REQUEST_BILL;
-		client.post(url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                listener.onFail(statusCode);
+            }
+        });
 
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-				InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
-				Gson gson = new GsonBuilder().create();
-				List<Bill> result = gson.fromJson(is, new TypeToken<List<Bill>>() {}.getType());
-				for(int i=0;i<result.size();i++){
-					result.get(i).setBill_title(result.get(i).getBill_title().replace("'", ""));
-				}
-				listener.onSuccess(result);
-			}
+    }
 
-			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-				listener.onFail(statusCode);
-			}
-		});
-	}
+    final String CHECK_MEMBER = "/checkMember.do";
 
-	final String REQUEST_COMMITTEE = "/requestCommitteeMeeting.do";
-	public void requestCommitteeMeeting(int tag, final OnNetResultListener<List<CommitteeMeeting>> listener) {
-		Log.d(TAG, "requestCommitteeMeeting start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    public void checkMemberInServer(MemberInfo kakaoMemberInfo, final OnNetResultListener<CheckMemberResult> listener) {
 
-		AsyncHttpClient client = new AsyncHttpClient();
-		RequestParams params = new RequestParams();
-		params.put("tag", tag);
+        Log.d(TAG, "checkMemberInServer start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-		String url = SERVER_URL + REQUEST_COMMITTEE;
-		client.post(url, params, new AsyncHttpResponseHandler() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        Gson gson = new GsonBuilder().create();
+        params.put("memberJSON", gson.toJson(kakaoMemberInfo));
 
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-				InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
-				Gson gson = new GsonBuilder().create();
-				List<CommitteeMeeting> result = gson.fromJson(is, new TypeToken<List<CommitteeMeeting>>() {}.getType());
-				listener.onSuccess(result);
-			}
+        String url = SERVER_URL + CHECK_MEMBER;
+        client.post(url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
+                Gson gson = new GsonBuilder().create();
+                CheckMemberResult result = gson.fromJson(is, CheckMemberResult.class);
+                listener.onSuccess(result);
+            }
 
-			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-				listener.onFail(statusCode);
-			}
-		});
-	}
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                listener.onFail(statusCode);
+            }
+        });
 
-	final String REQUEST_GENERAL = "/requestGeneralMeeting.do";
-	public void requestGeneralMeeting(int tag, final OnNetResultListener<List<GeneralMeeting>> listener) {
-		Log.d(TAG, "requestGeneralMeeting start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    }
 
-		AsyncHttpClient client = new AsyncHttpClient();
-		RequestParams params = new RequestParams();
-		params.put("tag", tag);
+    final String SAVE_MEMBER = "/saveMember.do";
 
-		String url = SERVER_URL + REQUEST_GENERAL;
-		client.post(url, params, new AsyncHttpResponseHandler() {
+    public void saveMemberServer(MemberInfo kakaoMemberInfo, final OnNetResultListener<CheckMemberResult> listener) {
 
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-				InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
-				Gson gson = new GsonBuilder().create();
-				List<GeneralMeeting> result = gson.fromJson(is, new TypeToken<List<GeneralMeeting>>() {}.getType());
-				listener.onSuccess(result);
-			}
+        Log.d(TAG, "saveMemberServer start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-				listener.onFail(statusCode);
-			}
-		});
-	}
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        Gson gson = new GsonBuilder().create();
+        params.put("memberJSON", gson.toJson(kakaoMemberInfo));
 
-	final String REQUEST_PARTY = "/requestParty.do";
-	public void requestPartyHistory(int tag, final OnNetResultListener<List<PartyHistory>> listener) {
-		Log.d(TAG, "requestPartyHistory start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        String url = SERVER_URL + SAVE_MEMBER;
+        client.post(url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
+                Gson gson = new GsonBuilder().create();
+                CheckMemberResult result = gson.fromJson(is, CheckMemberResult.class);
+                listener.onSuccess(result);
+            }
 
-		AsyncHttpClient client = new AsyncHttpClient();
-		RequestParams params = new RequestParams();
-		params.put("tag", tag);
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                listener.onFail(statusCode);
+            }
+        });
 
-		String url = SERVER_URL + REQUEST_PARTY;
-		client.post(url, params, new AsyncHttpResponseHandler() {
+    }
 
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-				InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
-				Gson gson = new GsonBuilder().create();
-				List<PartyHistory> result = gson.fromJson(is, new TypeToken<List<PartyHistory>>() {}.getType());
-				listener.onSuccess(result);
-			}
+    final String REQUEST_ASSEMBLYMAN = "/requestAssemblyman.do";
 
-			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-				listener.onFail(statusCode);
-			}
-		});
-	}
+    public void requestAssemblyman(int tag, final OnNetResultListener<List<Assemblyman>> listener) {
+        Log.d(TAG, "requestAssemblyman start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-	final String REQUEST_VOTE = "/requestVote.do";
-	public void requestVote(int tag, final OnNetResultListener<List<Vote>> listener) {
-		Log.d(TAG, "requestVote start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("tag", tag);
 
-		AsyncHttpClient client = new AsyncHttpClient();
-		RequestParams params = new RequestParams();
-		params.put("tag", tag);
+        String url = SERVER_URL + REQUEST_ASSEMBLYMAN;
+        client.post(url, params, new AsyncHttpResponseHandler() {
 
-		String url = SERVER_URL + REQUEST_VOTE;
-		client.post(url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
+                Gson gson = new GsonBuilder().create();
+                List<Assemblyman> result = gson.fromJson(is, new TypeToken<List<Assemblyman>>() {
+                }.getType());
+                listener.onSuccess(result);
+            }
 
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-				InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
-				Gson gson = new GsonBuilder().create();
-				List<Vote> result = gson.fromJson(is, new TypeToken<List<Vote>>() {}.getType());
-				listener.onSuccess(result);
-			}
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                listener.onFail(statusCode);
+            }
+        });
+    }
 
-			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-				listener.onFail(statusCode);
-			}
-		});
-	}
+    final String REQUEST_BILL = "/requestBill.do";
 
-	public HttpClient getHttpClient() {
-		return client.getHttpClient();
-	}
+    public void requestBill(int tag, final OnNetResultListener<List<Bill>> listener) {
+        Log.d(TAG, "requestBill start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("tag", tag);
+
+        String url = SERVER_URL + REQUEST_BILL;
+        client.post(url, params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
+                Gson gson = new GsonBuilder().create();
+                List<Bill> result = gson.fromJson(is, new TypeToken<List<Bill>>() {
+                }.getType());
+                for (int i = 0; i < result.size(); i++) {
+                    result.get(i).setBill_title(result.get(i).getBill_title().replace("'", ""));
+                }
+                listener.onSuccess(result);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                listener.onFail(statusCode);
+            }
+        });
+    }
+
+    final String REQUEST_COMMITTEE = "/requestCommitteeMeeting.do";
+
+    public void requestCommitteeMeeting(int tag, final OnNetResultListener<List<CommitteeMeeting>> listener) {
+        Log.d(TAG, "requestCommitteeMeeting start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("tag", tag);
+
+        String url = SERVER_URL + REQUEST_COMMITTEE;
+        client.post(url, params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
+                Gson gson = new GsonBuilder().create();
+                List<CommitteeMeeting> result = gson.fromJson(is, new TypeToken<List<CommitteeMeeting>>() {
+                }.getType());
+                listener.onSuccess(result);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                listener.onFail(statusCode);
+            }
+        });
+    }
+
+    final String REQUEST_GENERAL = "/requestGeneralMeeting.do";
+
+    public void requestGeneralMeeting(int tag, final OnNetResultListener<List<GeneralMeeting>> listener) {
+        Log.d(TAG, "requestGeneralMeeting start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("tag", tag);
+
+        String url = SERVER_URL + REQUEST_GENERAL;
+        client.post(url, params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
+                Gson gson = new GsonBuilder().create();
+                List<GeneralMeeting> result = gson.fromJson(is, new TypeToken<List<GeneralMeeting>>() {
+                }.getType());
+                listener.onSuccess(result);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                listener.onFail(statusCode);
+            }
+        });
+    }
+
+    final String REQUEST_PARTY = "/requestParty.do";
+
+    public void requestPartyHistory(int tag, final OnNetResultListener<List<PartyHistory>> listener) {
+        Log.d(TAG, "requestPartyHistory start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("tag", tag);
+
+        String url = SERVER_URL + REQUEST_PARTY;
+        client.post(url, params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
+                Gson gson = new GsonBuilder().create();
+                List<PartyHistory> result = gson.fromJson(is, new TypeToken<List<PartyHistory>>() {
+                }.getType());
+                listener.onSuccess(result);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                listener.onFail(statusCode);
+            }
+        });
+    }
+
+    final String REQUEST_VOTE = "/requestVote.do";
+
+    public void requestVote(int tag, final OnNetResultListener<List<Vote>> listener) {
+        Log.d(TAG, "requestVote start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("tag", tag);
+
+        String url = SERVER_URL + REQUEST_VOTE;
+        client.post(url, params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
+                Gson gson = new GsonBuilder().create();
+                List<Vote> result = gson.fromJson(is, new TypeToken<List<Vote>>() {
+                }.getType());
+                listener.onSuccess(result);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                listener.onFail(statusCode);
+            }
+        });
+    }
+
+    public HttpClient getHttpClient() {
+        return client.getHttpClient();
+    }
 }

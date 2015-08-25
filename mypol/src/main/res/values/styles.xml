@@ -150,6 +150,11 @@
         <item name="@android:textColor">@color/black</item>
     </style>
 
+    <style name="dialog_blue_light" parent="@android:style/Theme.Dialog">
+        <item name="@android:windowBackground">@color/material_blue_100</item>
+        <item name="@android:textColor">@color/black</item>
+    </style>
+
     <style name="dialog_title">
         <item name="android:textSize">@dimen/abc_text_size_headline_material</item>
         <item name="android:layout_marginTop">20dp</item>
@@ -163,7 +168,7 @@
         <item name="android:clickable">true</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">8dp</item>
+        <item name="android:layout_margin">10dp</item>
         <item name="android:padding">8dp</item>
         <item name="android:textSize">16sp</item>
     </style>

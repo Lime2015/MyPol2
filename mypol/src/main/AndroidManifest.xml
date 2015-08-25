@@ -127,9 +127,12 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".activity.ExtraInfoActivity"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize" />
+            android:name=".activity.ExtraInfoDialogActivity"
+            android:theme="@style/dialog_light"/>
+
+        <activity
+            android:name=".activity.GoogleMapSearchDialogActivity"
+            android:theme="@style/dialog_light"/>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"

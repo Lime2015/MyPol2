@@ -229,10 +229,11 @@ public class MainLoginTypeActivity extends AppCompatActivity {
     private void redirectWASignupActivity() {
         Log.d(TAG, "WASignupActivity start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-        Intent intent = new Intent(this, ExtraInfoActivity.class);
+        Intent intent = new Intent(this, ExtraInfoDialogActivity.class);
         intent.putExtra("kakaoMemberInfo", kakaoMemberInfo);
-        startActivityForResult(intent, WA_SIGNUP_CODE);
-        finish();
+        startActivity(intent);
+//        startActivityForResult(intent, WA_SIGNUP_CODE);
+//        finish();
     }
 
     private void showMainActivity() {

@@ -183,7 +183,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (memberInfo.isLogOn()) {
             textView.setText(memberInfo.getMemberNickname());
-            bar.setTitle(memberInfo.getMemberNickname());
+//            bar.setTitle(memberInfo.getMemberNickname());
+            bar.setTitle(getResources().getString(R.string.app_name));
             ImageUtil.displayRoundImage(imageView, memberInfo.getUrlThumbnail(), null);
         } else {
             textView.setText(R.string.watchMod);
