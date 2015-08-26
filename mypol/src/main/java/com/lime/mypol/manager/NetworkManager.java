@@ -97,29 +97,33 @@ public class NetworkManager {
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
+        String keyword = "";
         try {
-            params.put("address", URLEncoder.encode(input, "utf-8"));
-            params.put("sensor", true);
-            params.put("resion", "ko");
-            params.put("language", "ko");
+            keyword = URLEncoder.encode(input, "utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
-        client.post(GOOGLE_ADDRESS_URL, params, new AsyncHttpResponseHandler() {
+//        params.put("address", keyword);
+//        params.put("sensor", true);
+//        params.put("resion", "ko");
+//        params.put("language", "ko");
+        String url = GOOGLE_ADDRESS_URL + "?address=" + keyword + "*&resion=ko&language=ko";
+        client.get(url, new AsyncHttpResponseHandler() {
+//        client.get(GOOGLE_ADDRESS_URL, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
                 Gson gson = new GsonBuilder().create();
                 String str = new String(responseBody);
-//                Log.d(TAG, "google result:" + str);
+                Log.d(TAG, "google result:" + str);
                 SearchGoogleMapResult result = gson.fromJson(is, SearchGoogleMapResult.class);
                 List<String> address = new ArrayList<String>();
-                if(result.getStatus().equals("OK")){
-                    for(AddressResult ar : result.getResults()){
-                        String[] array = ar.getFormatted_address().split(" ");
-                        if(array[0].equals("대한민국")){
-                            address.add(ar.getFormatted_address());
+                if (result.getStatus().equals("OK")) {
+                    for (AddressResult ar : result.getResults()) {
+                        String adr = ar.getFormatted_address();
+                        String[] array = adr.split(" ");
+                        if (array[0].equals("대한민국")) {
+                            address.add(adr.replace("대한민국 ", ""));
                         }
                     }
                 }

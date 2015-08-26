@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -59,8 +60,19 @@ public class GoogleMapSearchDialogActivity extends Activity {
 
         listAddress = new ArrayList<>();
         input = (EditText) findViewById(R.id.edit_google_search);
+        input.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode == KeyEvent.KEYCODE_ENTER){
+                    button.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         listView = (ListView) findViewById(R.id.list_google_address);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, listAddress);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item_address, R.id.text_result_address, listAddress);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -86,6 +98,7 @@ public class GoogleMapSearchDialogActivity extends Activity {
                     NetworkManager.getInstance().searchAddress(keyword, new NetworkManager.OnNetResultListener<List<String>>() {
                         @Override
                         public void onSuccess(List<String> result) {
+                            listView.setVisibility(View.VISIBLE);
                             Log.d(TAG, "google result count : " + result.size());
                             listAddress.clear();
                             listAddress.addAll(result);
@@ -97,6 +110,9 @@ public class GoogleMapSearchDialogActivity extends Activity {
 
                         }
                     });
+
+
+
                 }
             }
         });

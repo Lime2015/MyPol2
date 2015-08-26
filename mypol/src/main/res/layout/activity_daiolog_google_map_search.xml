@@ -7,10 +7,10 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_margin="10dp"
-        android:layout_width="200dp"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_margin="10dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -19,22 +19,23 @@
             style="@style/dialog_body_box"
             android:layout_width="170dp"
             android:clickable="true"
-            android:text="신림동"
             android:textColor="@color/material_grey_600" />
 
         <ImageView
             android:id="@+id/btn_google_search"
-            android:src="@drawable/ic_search_white_24dp"
-            android:clickable="true"
-            android:background="@color/material_blue_200"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@color/material_blue_600"
+            android:clickable="true"
+            android:src="@drawable/ic_search_white_24dp" />
+
     </LinearLayout>
 
     <ListView
         android:id="@+id/list_google_address"
-        android:layout_gravity="center"
         android:layout_width="200dp"
-        android:layout_height="200dp"/>
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
 </LinearLayout>

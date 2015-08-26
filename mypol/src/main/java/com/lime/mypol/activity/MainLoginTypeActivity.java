@@ -227,7 +227,6 @@ public class MainLoginTypeActivity extends AppCompatActivity {
     }
 
     private void redirectWASignupActivity() {
-        Log.d(TAG, "WASignupActivity start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
         Intent intent = new Intent(this, ExtraInfoDialogActivity.class);
         intent.putExtra("kakaoMemberInfo", kakaoMemberInfo);
@@ -237,7 +236,6 @@ public class MainLoginTypeActivity extends AppCompatActivity {
     }
 
     private void showMainActivity() {
-        Log.d(TAG, "MainActivity start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("memberInfo", kakaoMemberInfo);
