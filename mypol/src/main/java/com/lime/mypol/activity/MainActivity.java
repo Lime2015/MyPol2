@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private DrawerLayout drawerLayout;
     //    private MaterialSheetFab materialSheetFab;
     private int statusBarColor;
+    private int mBadgeTag = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        setupFab();
         setupTabs();
 
-        BadgeUtil.setBadge(this, 1);
+        mBadgeTag = mRequireUpdateData ? 1 : 0;
+        BadgeUtil.setBadge(this, mBadgeTag);
     }
 
     @Override
@@ -91,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setupActionBar() {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
     }
 
     /**
@@ -177,18 +180,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = getIntent();
         memberInfo = (MemberInfo) intent.getSerializableExtra("memberInfo");
 
-        ActionBar bar = getSupportActionBar();
         TextView textView = (TextView) findViewById(R.id.member_id);
         ImageView imageView = (ImageView) findViewById(R.id.member_photo);
 
         if (memberInfo.isLogOn()) {
             textView.setText(memberInfo.getMemberNickname());
 //            bar.setTitle(memberInfo.getMemberNickname());
-            bar.setTitle(getResources().getString(R.string.app_name));
             ImageUtil.displayRoundImage(imageView, memberInfo.getUrlThumbnail(), null);
         } else {
             textView.setText(R.string.watchMod);
-            bar.setTitle(R.string.watchMod);
             imageView.setImageResource(R.drawable.ic_face_white_48dp);
         }
 
@@ -283,7 +283,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onSuccess(File result) {
 
                 progressDialog.setMessage("데이터베이스에 적용합니다....");
-                if (!DatabaseManager.getInstance(MainActivity.this).initDatabase(result)) {
+                if (!DatabaseManager.getInstance(MainActivity.this).initDatabase(result, memberInfo)) {
                     Toast.makeText(MainActivity.this, "데이터베이스 초기화 실패", Toast.LENGTH_SHORT).show();
                 }
 

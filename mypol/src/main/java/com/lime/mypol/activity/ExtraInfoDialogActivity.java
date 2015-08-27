@@ -160,6 +160,8 @@ public class ExtraInfoDialogActivity extends Activity {
                 if (result.getResult() == 1) {
                     // 정상 신규 등록
                     Toast.makeText(getApplicationContext(), "등록완료", Toast.LENGTH_SHORT).show();
+                    // 앱 DB에 멤버정보 저장
+
                     redirectKakaoActivity();
                 } else {
                     // 신규 등록 실패

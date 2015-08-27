@@ -21,9 +21,11 @@ import com.kakao.UserProfile;
 import com.kakao.exception.KakaoException;
 import com.kakao.widget.LoginButton;
 import com.lime.mypol.R;
+import com.lime.mypol.manager.DatabaseManager;
 import com.lime.mypol.manager.NetworkManager;
 import com.lime.mypol.models.MemberInfo;
 import com.lime.mypol.result.CheckMemberResult;
+import com.lime.mypol.utils.WindowUtil;
 import com.lime.mypol.view.kbv.KenBurnsView;
 
 
@@ -45,12 +47,49 @@ public class MainLoginTypeActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         super.onCreate(savedInstanceState);
         checkLoginInfo();
+        setSize();
+    }
+
+    final float BUTTON_HEIGHT_SCALE = 0.07f;
+    final float BUTTON_WIDTH_SCALE = 0.5f;
+    final float BUTTON_TEXT_SCALE = 0.05f;
+
+    private void setSize() {
+        WindowUtil.getDisplay(this);
+        int width, height, size;
+        width = (int) (WindowUtil.width * BUTTON_WIDTH_SCALE);
+        height = (int) (WindowUtil.height * BUTTON_HEIGHT_SCALE);
+        size = (int) (WindowUtil.height * BUTTON_TEXT_SCALE);
+        loginButton.setLayoutParams(new LinearLayout.LayoutParams(width, height));
+        btnDemo.setLayoutParams(new LinearLayout.LayoutParams(width, height));
+        btnDemo.setTextSize(size);
     }
 
     private void checkLoginInfo() {
         Log.d(TAG, "checkLoginInfo start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
         userProfile = UserProfile.loadFromCache();
+//        UserManagement.requestMe(new MeResponseCallback() {
+//            @Override
+//            protected void onSuccess(UserProfile up) {
+//                userProfile = up;
+//            }
+//
+//            @Override
+//            protected void onNotSignedUp() {
+//                userProfile = null;
+//            }
+//
+//            @Override
+//            protected void onSessionClosedFailure(APIErrorResult apiErrorResult) {
+//                userProfile = null;
+//            }
+//
+//            @Override
+//            protected void onFailure(APIErrorResult apiErrorResult) {
+//                userProfile = null;
+//            }
+//        });
 //        Log.d(TAG, "kakaoMemberInfo:" + kakaoMemberInfo);
 //        Log.d(TAG, "userProfile:" + userProfile);
 
@@ -60,10 +99,20 @@ public class MainLoginTypeActivity extends AppCompatActivity {
 
             if (id > 0) {
                 Log.d(TAG, "로그인정보:" + id + "/" + nickname);
-                kakaoMemberInfo = new MemberInfo("" + id, 1, nickname);
-                kakaoMemberInfo.setUrlThumbnail(userProfile.getThumbnailImagePath());
-                // web server 회원인지 체크
-                checkMemberInServer();
+                kakaoMemberInfo = DatabaseManager.getInstance(this).selectMemberInfo("" + id, 1);
+
+                if (kakaoMemberInfo == null) {
+                    kakaoMemberInfo = new MemberInfo("" + id, 1, nickname);
+//                kakaoMemberInfo.setUrlThumbnail(userProfile.getThumbnailImagePath());
+                    kakaoMemberInfo.setUrlThumbnail(userProfile.getProfileImagePath());
+//                    Log.d("kakako_img_url:", userProfile.getProfileImagePath());
+//                    Log.d("kakako_thum_url:", userProfile.getThumbnailImagePath());
+
+                    // web server 회원인지 체크
+                    checkMemberInServer();
+                } else {
+                    kakaoMemberInfo.setLogOn(true);
+                }
             } else {
                 initView();
             }
@@ -75,8 +124,11 @@ public class MainLoginTypeActivity extends AppCompatActivity {
 
     private LoginButton loginButton;
     private Button btnDemo;
+    private LinearLayout linearLayout;
+
     private void initView() {
         setContentView(R.layout.activity_main_login_type);
+        linearLayout = (LinearLayout) findViewById(R.id.layout_button);
         btnDemo = (Button) findViewById(R.id.demo_btn);
         btnDemo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,12 +138,12 @@ public class MainLoginTypeActivity extends AppCompatActivity {
         });
 
         loginButton = (LoginButton) findViewById(R.id.com_kakao_login);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainLoginTypeActivity.this.finish();
-            }
-        });
+//        loginButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                MainLoginTypeActivity.this.finish();
+//            }
+//        });
 
         session = Session.getCurrentSession();
         session.addCallback(mySessionCallback);
@@ -100,6 +152,7 @@ public class MainLoginTypeActivity extends AppCompatActivity {
     }
 
     private KenBurnsView mKenBurns;
+
     private void setAnimation() {
         mKenBurns = (KenBurnsView) findViewById(R.id.ken_burns_images);
         mKenBurns.setImageResource(R.drawable.main_background);
@@ -124,7 +177,7 @@ public class MainLoginTypeActivity extends AppCompatActivity {
     }
 
     private void animation2() {
-        LinearLayout linearLayout = (LinearLayout)findViewById(R.id.layout_button);
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.layout_button);
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.translate_top_to_center);
         linearLayout.startAnimation(anim);
     }

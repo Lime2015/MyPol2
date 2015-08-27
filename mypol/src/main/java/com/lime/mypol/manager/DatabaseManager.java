@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.lime.mypol.listitem.AssemblymanItem;
 import com.lime.mypol.listitem.BillItem;
+import com.lime.mypol.models.MemberInfo;
 import com.lime.mypol.result.CheckTagResult;
 import com.lime.mypol.utils.FileUtils;
 import com.lime.mypol.models.Assemblyman;
@@ -436,11 +437,75 @@ public class DatabaseManager {
         return count;
     }
 
-    public boolean initDatabase(File result) {
+    public boolean initDatabase(File result, MemberInfo memberInfo) {
         if (mDBHelper.initDatabase(mDB, result)) {
-            return open();
+            open();
+            makeTables();
+            insertMemberInfo(memberInfo);
+
+            return true;
         }
         return false;
+    }
+
+    private void makeTables() {
+        // member_info table 생성
+        String query;
+        query = "DROP TABLE IF EXISTS member_info;";
+        mDB.execSQL(query);
+        query = "CREATE TABLE member_info(" +
+                "member_id VARCHAR(45)," +
+                "logon_type_id int," +
+                "member_nickname VARCHAR(45)," +
+                "address VARCHAR(100)," +
+                "birth_date DATE, gender CHAR(1)," +
+                "url_thumbnail VARCHAR(100)," +
+                "CONSTRAINT tab_pk PRIMARY KEY (member_id, logon_type_id));";
+        mDB.execSQL(query);
+    }
+
+    public boolean insertMemberInfo(MemberInfo memberInfo) {
+        if (memberInfo == null) return true;
+
+        try {
+            String sql = "insert into member_info values('" + memberInfo.getMemberId() + "', " + memberInfo.getLogonTypeId() + ", '" +
+                    memberInfo.getMemberNickname() + "', '" + memberInfo.getAddress() + "', '" + memberInfo.getBirthDate() + "', '" +
+                    memberInfo.getGender() + "', '" + memberInfo.getUrlThumbnail() + "');";
+//                Log.d(TAG, sql);
+            mDB.execSQL(sql);
+
+        } catch (Exception ex) {
+            Log.d(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            try {
+                String sql = "update member_info set member_nickname='" + memberInfo.getMemberNickname() + "', address='" + memberInfo.getAddress() +
+                        "', birth_date='" + memberInfo.getBirthDate() + "', gender='" + memberInfo.getGender() + "'," + "url_thumbnail='" + memberInfo.getUrlThumbnail() +
+                        "' where member_id='" + memberInfo.getMemberId() + "' AND logon_type_id=" + memberInfo.getLogonTypeId() + ";";
+                mDB.execSQL(sql);
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public MemberInfo selectMemberInfo(String member_id, int logonType) {
+        MemberInfo memberInfo = null;
+        String sql = "";
+
+        sql = "select * from member_info where member_id='" + member_id + "' and logon_type_id=" + logonType;
+
+        Cursor cursor = rawQuery(sql);
+//        Log.d(TAG, cursor.getColumnName(1));
+        if (cursor != null && cursor.moveToFirst()) {
+            memberInfo.setMemberId(member_id);
+            memberInfo.setLogonTypeId(logonType);
+            memberInfo.setMemberNickname(cursor.getString(2));
+            memberInfo.setAddress(cursor.getString(3));
+            memberInfo.setGender(cursor.getString(4));
+            memberInfo.setUrlThumbnail(cursor.getString(5));
+        }
+
+        return memberInfo;
     }
 
     private class DatabaseHelper extends SQLiteOpenHelper {
@@ -563,6 +628,7 @@ public class DatabaseManager {
         }
 
         public String DB_FILEPATH = "/data/data/com.lime.mypol/databases/wadb";
+
         public boolean initDatabase(SQLiteDatabase db, File newDb) {
             dropTables(db);
             close();
@@ -580,6 +646,7 @@ public class DatabaseManager {
                 }
                 // Access the copied database so SQLiteHelper will cache it and mark
                 // it as created.
+
                 return true;
             }
             return false;

@@ -19,7 +19,9 @@
             style="@style/dialog_body_box"
             android:layout_width="170dp"
             android:clickable="true"
-            android:textColor="@color/material_grey_600" />
+            android:textColor="@color/material_grey_600" >
+            <requestFocus />
+        </EditText>
 
         <ImageView
             android:id="@+id/btn_google_search"

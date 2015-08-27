@@ -49,4 +49,6 @@ dependencies {
     compile 'com.android.support:design:22.2.1'
 
 //    compile 'com.google.android.gms:play-services:7.8.0'
+
+//    compile 'com.ssomai:android.scalablelayout:2.1.0'
 }

@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -63,13 +64,18 @@ public class GoogleMapSearchDialogActivity extends Activity {
         input.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(keyCode == KeyEvent.KEYCODE_ENTER){
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
                     button.performClick();
                     return true;
                 }
                 return false;
             }
         });
+
+        // 키보드 보여주기
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(input, InputMethodManager.SHOW_FORCED);
+        imm.showSoftInputFromInputMethod(input.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED);
 
         listView = (ListView) findViewById(R.id.list_google_address);
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item_address, R.id.text_result_address, listAddress);
@@ -78,7 +84,7 @@ public class GoogleMapSearchDialogActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // ListView Clicked item value
-                String  itemValue    = (String) listView.getItemAtPosition(position);
+                String itemValue = (String) listView.getItemAtPosition(position);
                 Intent i = new Intent();
                 i.putExtra("address", itemValue);
                 setResult(RESULT_OK, i);
@@ -110,7 +116,6 @@ public class GoogleMapSearchDialogActivity extends Activity {
 
                         }
                     });
-
 
 
                 }
