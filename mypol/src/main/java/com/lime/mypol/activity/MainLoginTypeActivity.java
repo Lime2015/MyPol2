@@ -55,14 +55,14 @@ public class MainLoginTypeActivity extends AppCompatActivity {
     final float BUTTON_TEXT_SCALE = 0.05f;
 
     private void setSize() {
-        WindowUtil.getDisplay(this);
-        int width, height, size;
-        width = (int) (WindowUtil.width * BUTTON_WIDTH_SCALE);
-        height = (int) (WindowUtil.height * BUTTON_HEIGHT_SCALE);
-        size = (int) (WindowUtil.height * BUTTON_TEXT_SCALE);
-        loginButton.setLayoutParams(new LinearLayout.LayoutParams(width, height));
-        btnDemo.setLayoutParams(new LinearLayout.LayoutParams(width, height));
-        btnDemo.setTextSize(size);
+//        WindowUtil.getDisplay(this);
+//        int width, height, size;
+//        width = (int) (WindowUtil.width * BUTTON_WIDTH_SCALE);
+//        height = (int) (WindowUtil.height * BUTTON_HEIGHT_SCALE);
+//        size = (int) (WindowUtil.height * BUTTON_TEXT_SCALE);
+//        loginButton.setLayoutParams(new LinearLayout.LayoutParams(width, height));
+//        btnDemo.setLayoutParams(new LinearLayout.LayoutParams(width, height));
+//        btnDemo.setTextSize(size);
     }
 
     private void checkLoginInfo() {

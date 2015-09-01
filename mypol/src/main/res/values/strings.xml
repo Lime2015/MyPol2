@@ -7,6 +7,8 @@
     <string name="favorites">Favorite Assemblyman/Bill</string>
     <string name="notes">Notes</string>
     <string name="opendrawer">Open drawer</string>
+    <string name="address">Address</string>
+    <string name="birthday">Birthday</string>
     <string name="photo">Photo</string>
     <string name="recording">Recording</string>
     <string name="refresh">Refresh</string>
@@ -33,5 +35,6 @@
     <string name="address_insert">Insert Address</string>
     <string name="birthday_insert">Insert Birthday</string>
     <string name="gender_insert">Select Gender</string>
+    <string name="nickname">Nickname</string>
 
 </resources>

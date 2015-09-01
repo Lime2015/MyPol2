@@ -10,8 +10,60 @@
         style="@style/dialog_title"
         android:text="@string/mypage_profile" />
 
+    <LinearLayout
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="@string/nickname"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/edit_nickname"
+            style="@style/dialog_body_box"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="@string/address"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/edit_address"
+            style="@style/dialog_body_box"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="@string/birthday"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/edit_birthday"
+            style="@style/dialog_body_box"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
     <View
         android:layout_width="match_parent"
+        android:background="@color/material_blue_800"
         android:layout_height="1dp" />
 
     <LinearLayout
@@ -21,11 +73,13 @@
 
         <TextView
             style="@style/dialog_button"
+            android:textColor="@color/material_blue_800"
             android:id="@+id/text_modify"
             android:text="@string/modify"/>
 
         <TextView
             style="@style/dialog_button"
+            android:textColor="@color/material_blue_800"
             android:id="@+id/text_cancel"
             android:text="@string/cancel" />
 
